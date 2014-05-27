@@ -1,0 +1,32 @@
+字符函数
+(1)小写字母转为大写字母Upcase('x') ，如：Upcase ('a')='A'
+(2)前趋函数：Pred('x')，函数结果为字符型，如：Pred('4')='3'
+(3)后继函数：Succ('x')，函数结果为字符型，如：Succ('A')='B'
+(4) 序数函数：Ord('x'), 函数结果为整型,求字符对应的ASCII码，如：Ord('A')=65
+(5)字符函数：Chr(x) ，x为整型，函数结果为字符型，,求ASCII码对应得字符，如：Chr(65)='A'
+字符串函数
+(1)求长度length
+定义：function Length(S: String): Integer;
+(2)复制子串copy
+定义： function Copy(S: String; Index: Integer; Count: Integer): String;
+注意：S 是字符串类型的表达式。Index和Count是整型表达式。Copy 返回S中从Index开始，Count个字符长的一个子串。
+(3)插入子串insert
+定义：procedure Insert(Source: String; var S: String; Index: Integer);
+注意：Source 是字符串类型的表达式。 S 是任意长度字符串类型变量。Index 是整型表达式。Insert 把 Source插在S中Index处。如果结果字符串的长度大于255，那么255之后的字符将被删除。
+(4)删除子串delete
+定义：procedure Delete(var S: String; Index: Integer; Count:Integer);
+注意：S 是字符串类型变量。 Index和Countare是整型表达式。Delete 删除S中从Index开始的Count个字符。如果Index大于S的长度，则不删除任何字符；如果Count大于S中从Index开始的实际字符数，则删除实际的字符数。
+(5)字符串转为数值val
+定义： procedure Val(S; var V; var Code: Integer);
+在这里:S 是由一系列数字字符构成的字符串类型变量；。V 是整型或实型变量；Code 是Integer型变量
+注意：Val将S转为它的数值形式。
+(6)数值转为字符串str
+定义： procedure Str(X [: Width [: Decimals ]]; var S:string);注意：将数值X转成字符串形式。
+(7)求子串起始位置pos
+定义：function Pos(Substr: String; S: String): Byte;
+注意：Substr和S字符串类型表达式。Pos在S中搜索Substr并返回一个integer值。这个值是Substr的第一个字符在S中的位置。如果在S中没有找到Substr，则Pos返回0。
+(8)字符完全串连+联
+定义：操作符加号+把两个字符串联在一起。
+(9)字符串压缩空格串连-
+定义：操作符减号-去掉第一个字符串最后的空格后，将两个字符串联在一起。
+(10) 将数组批量填入初值，Fillchar(x,sizeof(x),0),将0填入到x数组中，sizeof(x)表示填入的个数

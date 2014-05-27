@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<CONFIG>
+  <ProjectOptions>
+    <PathDelim Value="\"/>
+    <Version Value="5"/>
+    <General>
+      <Flags>
+        <MainUnitHasUsesSectionForAllUnits Value="False"/>
+        <MainUnitHasCreateFormStatements Value="False"/>
+        <MainUnitHasTitleStatement Value="False"/>
+      </Flags>
+      <MainUnit Value="0"/>
+      <TargetFileExt Value=".exe"/>
+      <ActiveEditorIndexAtStart Value="0"/>
+    </General>
+    <VersionInfo>
+      <ProjectVersion Value=""/>
+      <Language Value=""/>
+      <CharSet Value=""/>
+    </VersionInfo>
+    <PublishOptions>
+      <Version Value="2"/>
+      <IgnoreBinaries Value="False"/>
+      <IncludeFileFilter Value="*.(pas|pp|inc|lfm|lpr|lrs|lpi|lpk|sh|xml)"/>
+      <ExcludeFileFilter Value="*.(bak|ppu|ppw|o|so);*~;backup"/>
+    </PublishOptions>
+    <RunParams>
+      <local>
+        <FormatVersion Value="1"/>
+        <LaunchingApplication PathPlusParams="/usr/X11R6/bin/xterm -T 'Lazarus Run Output' -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
+      </local>
+    </RunParams>
+    <Units Count="1">
+      <Unit0>
+        <Filename Value="littleYY.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="litteY"/>
+        <CursorPos X="43" Y="28"/>
+        <TopLine Value="8"/>
+        <EditorIndex Value="0"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit0>
+    </Units>
+    <JumpHistory Count="8" HistoryIndex="7">
+      <Position1>
+        <Filename Value="littleYY.pas"/>
+        <Caret Line="12" Column="20" TopLine="1"/>
+      </Position1>
+      <Position2>
+        <Filename Value="littleYY.pas"/>
+        <Caret Line="48" Column="49" TopLine="25"/>
+      </Position2>
+      <Position3>
+        <Filename Value="littleYY.pas"/>
+        <Caret Line="9" Column="1" TopLine="1"/>
+      </Position3>
+      <Position4>
+        <Filename Value="littleYY.pas"/>
+        <Caret Line="18" Column="10" TopLine="1"/>
+      </Position4>
+      <Position5>
+        <Filename Value="littleYY.pas"/>
+        <Caret Line="9" Column="6" TopLine="1"/>
+      </Position5>
+      <Position6>
+        <Filename Value="littleYY.pas"/>
+        <Caret Line="49" Column="16" TopLine="26"/>
+      </Position6>
+      <Position7>
+        <Filename Value="littleYY.pas"/>
+        <Caret Line="29" Column="33" TopLine="1"/>
+      </Position7>
+      <Position8>
+        <Filename Value="littleYY.pas"/>
+        <Caret Line="12" Column="1" TopLine="1"/>
+      </Position8>
+    </JumpHistory>
+  </ProjectOptions>
+  <CompilerOptions>
+    <Version Value="5"/>
+    <PathDelim Value="\"/>
+    <CodeGeneration>
+      <Generate Value="Faster"/>
+    </CodeGeneration>
+    <Other>
+      <CompilerPath Value="$(CompPath)"/>
+    </Other>
+  </CompilerOptions>
+  <Debugging>
+    <Exceptions Count="2">
+      <Item1>
+        <Name Value="ECodetoolError"/>
+      </Item1>
+      <Item2>
+        <Name Value="EFOpenError"/>
+      </Item2>
+    </Exceptions>
+  </Debugging>
+</CONFIG>

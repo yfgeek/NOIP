@@ -1,0 +1,149 @@
+<?xml version="1.0"?>
+<CONFIG>
+  <ProjectOptions>
+    <PathDelim Value="\"/>
+    <Version Value="5"/>
+    <General>
+      <Flags>
+        <MainUnitHasUsesSectionForAllUnits Value="False"/>
+        <MainUnitHasCreateFormStatements Value="False"/>
+        <MainUnitHasTitleStatement Value="False"/>
+      </Flags>
+      <MainUnit Value="0"/>
+      <IconPath Value="./"/>
+      <TargetFileExt Value=".exe"/>
+      <ActiveEditorIndexAtStart Value="0"/>
+    </General>
+    <VersionInfo>
+      <ProjectVersion Value=""/>
+      <Language Value=""/>
+      <CharSet Value=""/>
+    </VersionInfo>
+    <PublishOptions>
+      <Version Value="2"/>
+      <IgnoreBinaries Value="False"/>
+      <IncludeFileFilter Value="*.(pas|pp|inc|lfm|lpr|lrs|lpi|lpk|sh|xml)"/>
+      <ExcludeFileFilter Value="*.(bak|ppu|ppw|o|so);*~;backup"/>
+    </PublishOptions>
+    <RunParams>
+      <local>
+        <FormatVersion Value="1"/>
+        <LaunchingApplication PathPlusParams="/usr/X11R6/bin/xterm -T 'Lazarus Run Output' -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
+      </local>
+    </RunParams>
+    <Units Count="1">
+      <Unit0>
+        <Filename Value="bags.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="bagss"/>
+        <CursorPos X="36" Y="31"/>
+        <TopLine Value="18"/>
+        <EditorIndex Value="0"/>
+        <UsageCount Value="22"/>
+        <Loaded Value="True"/>
+      </Unit0>
+    </Units>
+    <JumpHistory Count="20" HistoryIndex="19">
+      <Position1>
+        <Filename Value="bags.pas"/>
+        <Caret Line="63" Column="6" TopLine="39"/>
+      </Position1>
+      <Position2>
+        <Filename Value="bags.pas"/>
+        <Caret Line="1" Column="14" TopLine="1"/>
+      </Position2>
+      <Position3>
+        <Filename Value="bags.pas"/>
+        <Caret Line="12" Column="17" TopLine="1"/>
+      </Position3>
+      <Position4>
+        <Filename Value="bags.pas"/>
+        <Caret Line="13" Column="18" TopLine="2"/>
+      </Position4>
+      <Position5>
+        <Filename Value="bags.pas"/>
+        <Caret Line="16" Column="6" TopLine="12"/>
+      </Position5>
+      <Position6>
+        <Filename Value="bags.pas"/>
+        <Caret Line="25" Column="16" TopLine="6"/>
+      </Position6>
+      <Position7>
+        <Filename Value="bags.pas"/>
+        <Caret Line="26" Column="6" TopLine="12"/>
+      </Position7>
+      <Position8>
+        <Filename Value="bags.pas"/>
+        <Caret Line="17" Column="14" TopLine="1"/>
+      </Position8>
+      <Position9>
+        <Filename Value="bags.pas"/>
+        <Caret Line="12" Column="4" TopLine="1"/>
+      </Position9>
+      <Position10>
+        <Filename Value="bags.pas"/>
+        <Caret Line="43" Column="35" TopLine="30"/>
+      </Position10>
+      <Position11>
+        <Filename Value="bags.pas"/>
+        <Caret Line="44" Column="36" TopLine="34"/>
+      </Position11>
+      <Position12>
+        <Filename Value="bags.pas"/>
+        <Caret Line="45" Column="5" TopLine="31"/>
+      </Position12>
+      <Position13>
+        <Filename Value="bags.pas"/>
+        <Caret Line="13" Column="5" TopLine="42"/>
+      </Position13>
+      <Position14>
+        <Filename Value="bags.pas"/>
+        <Caret Line="53" Column="24" TopLine="40"/>
+      </Position14>
+      <Position15>
+        <Filename Value="bags.pas"/>
+        <Caret Line="20" Column="36" TopLine="11"/>
+      </Position15>
+      <Position16>
+        <Filename Value="bags.pas"/>
+        <Caret Line="17" Column="6" TopLine="7"/>
+      </Position16>
+      <Position17>
+        <Filename Value="bags.pas"/>
+        <Caret Line="28" Column="19" TopLine="10"/>
+      </Position17>
+      <Position18>
+        <Filename Value="bags.pas"/>
+        <Caret Line="38" Column="5" TopLine="14"/>
+      </Position18>
+      <Position19>
+        <Filename Value="bags.pas"/>
+        <Caret Line="26" Column="40" TopLine="13"/>
+      </Position19>
+      <Position20>
+        <Filename Value="bags.pas"/>
+        <Caret Line="29" Column="22" TopLine="16"/>
+      </Position20>
+    </JumpHistory>
+  </ProjectOptions>
+  <CompilerOptions>
+    <Version Value="5"/>
+    <PathDelim Value="\"/>
+    <CodeGeneration>
+      <Generate Value="Faster"/>
+    </CodeGeneration>
+    <Other>
+      <CompilerPath Value="$(CompPath)"/>
+    </Other>
+  </CompilerOptions>
+  <Debugging>
+    <Exceptions Count="2">
+      <Item1>
+        <Name Value="ECodetoolError"/>
+      </Item1>
+      <Item2>
+        <Name Value="EFOpenError"/>
+      </Item2>
+    </Exceptions>
+  </Debugging>
+</CONFIG>

@@ -1,0 +1,28 @@
+ASSIGN(F,C)             P      将字符串C所表示的外部文件名赋给文件变量F 
+ASSIGNED(X)             P      测试程序当中的指针或变量是否为空 
+BLOCKREAD(F,D,NUM)      P      读类型文件。 
+BLOCKWRITE(F,D,NUM)     P      写无类型文件 
+CLOSE(F)                P      关闭文件 
+FILEPOS(F)              F      文件记录的当前位置 
+FILESIZE(F)             F      文件记录数 
+FLUSH(F)                P      清空文件缓存区
+reset(f)                p      打开文件，并将文件指针指向开始，并准备读数据 
+rewrite(f)              p      打开文件，并将文件指针指向开始，准备写资料 
+seek(f,n)               p      将文件指针定位于文件f的第n个文件成分上 
+seekrof(f)              f      定位到文件尾 
+settextbuf(f)           p      将输入/出缓冲区与一个文本文件建立关联 
+truncate(f)             p      截去文件当前指针以后的内容
+fsearch                 f      在一个目录中查找文件 
+fsplit                  f      将一个文件名分成目录、文件名、扩展名 
+findfirst               p      在当前目录或指定目录下查找第一个与给定属性相匹配的文件名
+
+seek过程
+  形式：seek(f,n);
+  功能：把文件指针移到f指明文件的第n个元素。
+
+append过程
+  形式：append(f);
+  功能：打开一个已经存在的磁盘文件，其文件名必须和assign过程中的变量名f相对应，该文件只能写，此时文件指针指向文件尾。
+
+eof(x)        文件是否结束
+eoln(x)       行是否结束
