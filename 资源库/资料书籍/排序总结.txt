@@ -1,0 +1,302 @@
+
+
+program sort;
+type shu=array [0..maxint] of integer;
+var n,i:integer;
+    a,b:shu;
+procedure swap(var sa,sb:integer);
+var t:integer;
+begin
+    t:=sa;
+    sa:=sb;
+    sb:=t;
+end;
+procedure select(var x:shu);
+var min,s,t:integer;
+begin
+    for s:=1 to n-1 do
+      begin
+        min:=s;
+        for t:=s+1 to n do
+          if x[t]<x[min]
+            then
+              min:=t;
+        if min<>s
+          then
+            swap(x[s],x[min]);
+      end;
+end;
+procedure insert(var x:shu);
+var s,t:integer;
+begin
+    for s:=2 to n do
+      begin
+        x[0]:=x[s];
+        t:=s-1;
+        while x[t]>x[0] do
+          begin
+            x[t+1]:=x[t];
+            t:=t-1;
+          end;
+        x[t+1]:=x[0];
+      end;
+end;
+procedure bubble(var x:shu);
+var s,t,flag:integer;
+begin
+    for s:=1 to n-1 do
+      begin
+        flag:=0;
+        for t:=n downto s+1 do
+          if x[t]<x[t-1]
+            then
+              begin
+                swap(x[t],x[t-1]);
+                flag:=flag+1;
+              end;
+        if flag=0 then exit;
+      end;
+end;
+
+
+begin
+readln(n);
+for i:=1 to n do
+    read(a[i]);
+b:=a;
+select(b);
+for i:=1 to n do
+    write(b[i],' ');
+writeln;
+b:=a;
+insert(b);
+for i:=1 to n do
+    write(b[i],' ');
+writeln;
+b:=a;
+bubble(b);
+for i:=1 to n do
+    write(b[i],' ');
+writeln;
+end.
+
+part2 快速排序
+
+program quicksort;
+var n,l:integer;
+    a:array [1..maxint] of integer;
+procedure sort(s,t:integer);
+var i,j,k,x:integer;
+begin
+    i:=s;
+    j:=t;
+    k:=random(t-s+1)+s;
+    x:=a[k];
+    a[k]:=a[s];
+    while (i<j) do
+      begin
+        while (i<j) and (x<=a[j]) do
+          j:=j-1;
+        if (i<j)
+          then
+            begin
+              a[i]:=a[j];
+              i:=i+1;
+            end;
+        while (i<j) and (x>=a[i]) do
+          i:=i+1;
+        if (i<j)
+          then
+            begin
+              a[j]:=a[i];
+              j:=j-1;
+            end;
+      end;
+    a[i]:=x;
+    if s<i-1 then sort(s,i-1);
+    if i+1<t then sort(i+1,t);
+end;
+
+begin
+readln(n);
+for l:=1 to n do
+    read(a[l]);
+sort(1,n);
+for l:=1 to n do
+    write(a[l],' ');
+end.                  
+                            
+
+part3 堆排序
+
+program heap;
+var n,ii:integer;
+    a:array [1..maxint] of integer;
+procedure sift(i,m:integer);
+var j,key:integer;
+begin
+    j:=2*i;
+    key:=a[i];
+    while j<=m do
+      begin
+        if (j<m) and (a[j]<a[j+1])
+          then
+            j:=j+1;
+        if key<a[j]
+          then
+            begin
+              a[i]:=a[j];
+              i:=j;
+              j:=i*2;
+            end
+          else
+            j:=m+1;
+      end;
+    a[i]:=key;
+end;
+
+
+procedure heapsort;
+var j,z:integer;
+begin
+    for j:=(n div 2) downto 1 do
+      sift(j,n);
+    for j:=n downto 2 do
+      begin
+        z:=a[1];
+        a[1]:=a[j];
+        a[j]:=z;
+        sift(1,j-1);
+      end;
+end;
+
+
+begin
+readln(n);
+for ii:=1 to n do
+    read(a[ii]);
+heapsort;
+for ii:=1 to n do
+    write(a[ii],' ');
+end.                  
+
+part4 希尔排序
+
+program shellsort;
+var n,i,j,d,x:integer;
+    a:array [1..maxint] of integer;
+begin
+readln(n);
+for i:=1 to n do
+    read(a[i]);
+d:=n div 2;
+while d>=1 do
+    begin
+      for i:=d+1 to n do
+        begin
+          j:=i-d;
+          x:=a[i];
+          while (a[j]>x) and (j>0) do
+            begin
+              a[j+d]:=a[j];
+              j:=j-d;
+            end;
+          a[j+d]:=x;
+        end;
+      d:=d div 2;
+    end;
+for i:=1 to n do
+    write(a[i],' ');
+end.              
+
+
+part5 计数排序
+
+program jishu;
+var n,i:integer;
+    a,ge,b:array [1..maxint] of integer;
+begin
+readln(n);
+for i:=1 to n do
+    begin
+      read(a[i]);
+      ge[a[i]]:=ge[a[i]]+1;
+    end;
+for i:=2 to maxint do
+    inc(ge[i],ge[i-1]);
+for i:=n downto 1 do
+    begin
+      b[ge[a[i]]]:=a[i];
+      dec(ge[a[i]]);
+    end;
+for i:=1 to n do
+    write(b[i],' ');
+end.          
+
+昨天一深呼吸就难受，不知道是怎么了
+
+晚上遍了个归并排序就睡觉了，今天感觉还不错
+
+昨天的程序：
+
+program merge;
+const n=10;
+var a,r:array [1..maxint] of integer;
+    i:integer;
+procedure merge(s,m,t:integer);
+var p1,p2,j,k:integer;
+begin
+    p1:=s;
+    p2:=m+1;
+    j:=s;
+    while (p1<=m) and (p2<=t) do
+      begin
+        if a[p1]<=a[p2]
+          then
+            begin
+              r[j]:=a[p1];
+              inc(p1);
+              inc(j);
+            end
+          else
+            begin
+              r[j]:=a[p2];
+              inc(p2);
+              inc(j);
+            end;
+      end;
+    if p1>m
+      then
+        for k:=s to (j-1) do
+          a[k]:=r[k]
+      else
+        begin
+          for k:=j to t do
+            r[k]:=a[m+k-t];
+          for k:=s to t do
+            a[k]:=r[k];
+        end;
+end;
+
+
+procedure sort(x,y:integer);
+var mid:integer;
+begin
+    if x<>y
+      then
+        begin
+          mid:=(x+y) div 2;
+          sort(x,mid);
+          sort(mid+1,y);
+          merge(x,mid,y);
+        end;
+end;
+
+
+begin
+for i:=1 to n do
+    read(a[i]);
+sort(1,n);
+for i:=1 to n do
+    write(a[i],' ');
+end.

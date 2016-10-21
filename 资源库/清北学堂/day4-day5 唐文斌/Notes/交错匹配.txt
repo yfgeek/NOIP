@@ -1,0 +1,48 @@
+F[i, j]表示
+	A[1..i]
+	B[1..j] 的 最多的交叉匹配个数(不相交)
+
+O(n^6)
+	A: a < b
+	B: c < d
+	A[a] = B[d], A[b] = B[c], A[a] <> !=  B[c]
+
+	F[i,j] = max( F[a - 1, c - 1] + 1 );
+
+O(n^4)
+F[i,j]:
+1) 都用
+	A: x i
+	B: y j
+	B[y] = A[i], A[x] = B[j], A[i] != <> B[j]
+
+	F[i,j] = max( F[x-1, y-1] + 1 );
+2) 不都用
+	F[i-1,j], F[i,j - 1]
+
+O(n^3)
+	寻找一个最大的x < i, 使得 A[x] = B[j]   
+	寻找一个最大的y < j, 使得 B[y] = A[i]
+
+O(n^2)	以存代算
+	寻找一个最大的x < i, 使得 A[x] = B[j]   
+		目标:  O(1) : bestX[j, i] 
+
+	定义数组: 
+		bestX[j, i]: 表示最大的x < i, 使得 A[x] = B[j]   
+
+	预处理: |A| = n, |B| = m
+
+	for j := 1 to m do
+		curtBestX = -1;
+		for i := 1 to n do
+		begin
+			bestX[j, i] = curtBestX;
+			if (A[i] = B[j])
+				then curtBestX := i;
+		end;
+	O(nm) : O(n^2)	
+
+
+
+	

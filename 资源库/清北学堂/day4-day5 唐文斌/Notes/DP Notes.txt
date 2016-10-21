@@ -1,0 +1,44 @@
+function F( p : Integer ) : Integer;
+begin
+	if (p > n) then exit ( 0 );
+
+	ans := + oo;
+
+	for r := p to n do
+	if (S[p..r] 是一个单词)
+		ans := min(ans, 1 + F(r + 1));
+
+	exit(ans);
+end;
+
+
+     F( p ) 表示 上一个单词的结束位置是在p-1
+	剩下的S[p..n]最少要分成多少个单词
+
+	F( 1 )
+---------------------------------------------------
+
+切到了哪个位置  *
+多少段 *
+
+F[i, p] 表示 1..i , p段
+
+状态: N*K
+转移: N
+	//[j..i]
+    F[i,p] = min( F[j-1, p-1] + [j..i]中的黑马*白马) 
+	       j
+
+
+
+
+
+
+
+
+
+
+
+
+
+

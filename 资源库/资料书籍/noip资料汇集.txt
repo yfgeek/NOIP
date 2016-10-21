@@ -1,0 +1,407 @@
+快速幂取模
+若设底数为K,N为偶数,则K^N为:(K^(n shr 1))^2
+若设底数为K,N为奇数,则K^N为:(K^(n shr 1))^2*K
+证明略，提示：二分的思想
+比如：若设K为2,N为偶数,则2^N为:(2^(n shr 1))^2
+若设K为2,N为奇数,则2^N为:(2^(n shr 1))^2*2
+
+可以扩展为A^B mod c
+其实就是在求出K^(n shr 1)时mod c，再返回值.
+Function F (b : longint) : longint;
+  Var k ,m : longint;
+  Begin
+    if x = 0 then exit(1);
+    if x and 1 = 0 then
+     Begin
+      m := F (x shr 1);
+      k := (m * m) mod c; exit(k)
+     End else
+     Begin
+      m := F (x shr 1);
+      k := (m * m * s) mod 100; exit(k)
+     End
+  End;
+
+最小生成树
+procedure prim(v0:integer);
+ 
+var
+   lowcost,closest:array[1..maxn] of integer;
+   i,j,k,min:integer;
+begin
+   for i:=1 to n do begin
+      lowcost[i]:=cost[v0,i];
+      closest[i]:=v0;
+   end;
+   for i:=1 to n-1 do begin
+   {寻找离生成树最近的未加入顶点k}
+      min:=maxint;
+      for j:=1 to n do
+         if (lowcost[j]<min) and (lowcost[j]<>0) then begin
+            min:=lowcost[j];
+            k:=j;
+         end;
+      lowcost[k]:=0; {将顶点k加入生成树}
+      {生成树中增加一条新的边k到closest[k]}
+      {修正各点的lowcost和closest值}
+      for j:=1 to n do
+         if cost[k,j]<lowcost[j] then begin
+            lowcost[j]:=cost[k,j];
+            closest[j]:=k;
+         end;
+   end;
+end;{prim}
+
+最短路
+program dijkstra;
+var a:array[1..100,1..100]of integer;
+    flag:array[1..100]of boolean;
+    w,x,n,i,j,min,minn:integer;
+begin
+  assign(input,'dijkstra.in');
+  reset(input);
+  assign(output,'dijkstra.out');
+  rewrite(output);
+  readln(n);
+  for i:=1 to n do
+  begin
+    for j:=1 to n do read(a[i,j]);
+    readln;
+  end;
+  fillchar(flag,sizeof(flag),false);
+  flag[1]:=true;
+  minn:=1;
+  for x:=2 to n do
+  begin
+    min:=32767;
+    for i:=2 to n do
+      if (a[1,i]<min)and(flag[i]=false) then
+      begin
+        min:=a[1,i];
+        minn:=i;
+      end;
+    flag[minn]:=true;
+    for j:=1 to n do
+      if (j<>minn)and(a[1,minn]+a[minn,j]<a[1,j])
+        and(flag[j]=false) then
+          a[1,j]:=a[1,minn]+a[minn,j];
+  end;
+  for i:=1 to n do
+  write(a[1,i],' ');
+  close(input);
+  close(output);
+end.
+
+{单源最短路径的Bellman-ford算法
+执行v-1次，每次对每条边进行松弛操作
+如有负权回路则输出"Error"
+}
+ const
+  maxn=100;
+  maxe=maxn*(maxn-1)div 2;
+ type
+  edge=record
+         a,b,w  :integer;
+       end;
+ var
+  edges :array[1..maxe]of edge;
+  dis   :array[1..maxn]of integer;
+  pre   :array[1..maxn]of integer;
+  e,n,s :integer;
+ procedure init;
+ var
+  i     :integer;
+ begin
+  e:=0;
+  assign(input,'g.in');reset(input);
+  readln(n,s);
+  while not eof do
+    begin
+      inc(e);
+      with edges[e] do readln(a,b,w);
+    end;
+  fillchar(dis,sizeof(dis),$7f);//初始值为无穷大
+  dis[s]:=0;pre[s]:=s;
+ end;
+ procedure relax(u,v,w:integer);
+ begin
+  if dis[u]+w<dis[v] then
+    begin
+      dis[v]:=dis[u]+w;
+      pre[v]:=u;
+    end
+ end;
+ function bellman_ford:boolean;
+ var
+  i,j   :integer;
+ begin
+  for i:=1 to n-1 do
+    for j:=1 to e do
+      with edges[j] do relax(a,b,w);
+  for i:=1 to e do
+    with edges[i] do
+      if dis[a]+w<dis[b] then exit(false);
+  exit(true)
+ end;
+ procedure print_path(i:integer);
+ begin
+  if pre[i]<>s then print_path(pre[i]);
+  write('-->',i)
+ end;
+ procedure show;
+ var
+  i     :integer;
+ begin
+  for i:=1 to n do
+    begin
+      write(i:3,':',dis[i]:3,':',s);
+      print_path(i);
+      writeln
+    end;
+ end;
+ {========main========}
+ begin
+ init;
+ if bellman_ford then show
+  else writeln('Error!!')
+ end.
+
+
+procedure floyd;
+for k:=1 to n do
+  for i:=1 to n do
+   for j:=1 to n do
+     if  map[i,k]+map[k,j]<map[i,j] then 
+       map[i,j]:=map[i,k]+map[k,j];
+end;
+
+字符串匹配
+program KMP;
+var p:array[1..255] of integer;
+    a,b:string;
+    n,m,i,j:integer;
+
+procedure get_next;
+var i,j:integer;
+begin
+  p[1]:=0;
+  j:=0;
+  for i:=2 to m do
+  begin
+    while (j>0) and (b[j+1]<>b[i])
+      do j:=p[j];
+    if b[j+1]=b[i] then j:=j+1;
+    p[i]:=j;
+  end;
+end;
+
+begin
+  readln(a);
+  readln(b);
+  get_next;
+  j:=0;
+  n:=length(a);
+  m:=length(b);
+  for i:=1 to n do
+  begin
+    while (j>0)and(b[j+1]<>a[i]) do j:=p[j];
+    if b[j+1]=a[i] then j:=j+1;
+    if j=m then
+    begin
+      writeln('Pattern occurs with shift ',i-m+1);
+      j:=p[j];
+    end;
+  end;
+end.
+
+rmq
+//　RMQ (Range Minimum/Maximum Query)问题是指：对于长度为n的数列A，回答若干询问RMQ(A,i,j)(i,j<=n)，返回数列A中下标在[i,j]里的最小(大）值。
+//ST算法（Sparse Table），以求最大值为例，设d[i,j]表示[i,i+2^j-1]这个区间内的最大值，那么在询问到[a,b]区间的最大值时答案就是max(d[a,k], d[b-2^k+1,k])，其中k是满足2^k<=b-a的最大的k,即k=[ln(b-a+1)/ln(2)]
+//d的求法可以用动态规划，d[i,j]=max(d[i,j-1],d[i+2^(j-1),j-1])
+
+program st;
+var a,b,i,j,k,rmq,n,q:longint;
+    d:array[0..10000,0..50] of longint;
+
+function max(x,y:longint):longint;
+begin
+  if x>y then max:=x else max:=y;
+end;
+
+begin
+  assign(input,'rmq.in');
+  reset(input);
+  assign(output,'rmq.out');
+  rewrite(output);
+  Readln(n, q);
+  fillchar(d,sizeof(d),0);
+  for i:=1 to n do read(d[i,0]);
+  readln;
+  for j:=1 to trunc(Ln(n)/Ln(2)) do
+    for i:=1 to n-1 shl j+1 do
+      d[i,j]:=Max(d[i,j-1],d[i+1 shl (j-1),j-1]);
+  for i:=1 to q do
+  begin
+    Readln(a,b);
+    k:=Trunc(Ln(b-a+1)/Ln(2));
+    rmq:=Max(d[a,k],d[b-1 shl k+1,k]);
+    Writeln(rmq);
+  end;
+  close(input);
+  close(output);
+end.
+
+判断图中是否有环
+program tppv;
+const maxn=100;
+var
+  map:array[1..maxn,1..maxn] of byte;
+  into:array[1..maxn] of byte;
+  n,i,j,k:byte;
+procedure init;
+var
+  i,j:integer;
+begin
+  fillchar(into,sizeof(into),0);
+  read(n);
+  for i:=1 to n do
+    for j:=1 to n do
+      begin
+        read(map[i,j]);
+        if map[i,j]=1 then inc(into[j]);  //记录j结点的前驱结点个数
+      end;
+end;
+begin
+  init;
+  for i:=1 to n do
+  begin
+    j:=1;
+    while (j<=n)and(into[j]<>0) do inc(j);
+    write(j,' ');
+    into[j]:=255;
+    for k:=1 to n do
+      if map[j,k]=1 then dec(into[k]); 
+  end;
+end.
+
+
+{拓扑排序的方法和步骤：
+
+（1）在图中选一个没有前趋的顶点并输出之
+
+（2）删除该顶点及由它发出的各边，直到图中不存在没有前趋的顶点为止。
+
+若图中存在回路，拓扑排序无法进行。
+
+
+
+线段树
+
+program p3264;
+
+type treenode=record
+       a,b,left,right,max,min:longint;
+     end;
+
+const maxn=50001;
+
+var s:array[0..maxn] of longint;
+    n,q,tot:longint;
+    tree:array[0..200000] of treenode;
+
+function max(i,j:longint):longint;
+begin
+  if i>j then max:=i else max:=j;
+end;
+
+function min(i,j:longint):longint;
+begin
+  if i<j then min:=i else min:=j;
+end;
+
+procedure init;
+var i:longint;
+
+begin
+  fillchar(s,sizeof(s),0);
+  fillchar(tree,sizeof(tree),0);
+  readln(n,q);
+  for i:=1 to n do
+    read(s[i]);
+end;
+
+procedure maketree(a,b:longint);
+var now,mid:longint;
+begin
+  inc(tot);
+  now:=tot;
+  tree[now].a:=a;
+  tree[now].b:=b;
+  mid:=(a+b) div 2;
+  if a<b then
+  begin
+    tree[now].left:=tot+1;
+    maketree(a,mid);
+    tree[now].right:=tot+1;
+    maketree(mid+1,b);
+    tree[now].max:=max(tree[tree[now].left].max,tree[tree[now].right].max);
+    tree[now].min:=min(tree[tree[now].left].min,tree[tree[now].right].min);
+  end
+  else
+  if a=b then
+  begin
+    tree[now].max:=s[a];
+    tree[now].min:=s[a];
+    exit;
+  end;
+end;
+
+function findmax(now,a,b:longint):longint;
+var mid:longint;
+begin
+  if (a<=tree[now].a)and(b>=tree[now].b) then
+    exit(tree[now].max);
+  mid:=(tree[now].a+tree[now].b) div 2;
+  if b<=mid then exit(findmax(tree[now].left,a,b));
+  if a>mid then exit(findmax(tree[now].right,a,b));
+  findmax:=max(findmax(tree[now].left,a,b),findmax(tree[now].right,a,b));
+end;
+
+function findmin(now,a,b:longint):longint;
+var mid:longint;
+begin
+  if (a<=tree[now].a)and(b>=tree[now].b) then
+    exit(tree[now].min);
+  mid:=(tree[now].a+tree[now].b) div 2;
+  if b<=mid then exit(findmin(tree[now].left,a,b));
+  if a>mid then exit(findmin(tree[now].right,a,b));
+  findmin:=min(findmin(tree[now].left,a,b),findmin(tree[now].right,a,b));
+end;
+
+procedure work;
+var x,y,i,maxx,minn:longint;
+begin
+  tot:=0;
+  maketree(1,n);
+  for i:=1 to q do
+  begin
+    readln(x,y);
+    maxx:=findmax(1,x,y);
+    minn:=findmin(1,x,y);
+    writeln(maxx-minn);
+  end;
+
+end;
+
+begin
+  assign(input,'p3264.in');
+  reset(input);
+  assign(output,'p3264.out');
+  rewrite(output);
+  init;
+  work;
+  close(input);
+  close(output);
+end.
+
+

@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0051)http://www.bashu.com.cn/olympic/jszl/noip_2002t.htm -->
+<HTML><HEAD><TITLE>02提高组复赛试题</TITLE>
+<STYLE type=text/css>BODY {
+	FONT-SIZE: 13px; BACKGROUND: #ffffff; FONT-FAMILY: "宋体"
+}
+A {
+	FONT-SIZE: 13px; FONT-FAMILY: "宋体"
+}
+TD {
+	FONT-SIZE: 13px; FONT-FAMILY: "宋体"
+}
+A {
+	TEXT-TRANSFORM: none; TEXT-DECORATION: none
+}
+A:hover {
+	COLOR: red; TEXT-DECORATION: underline
+}
+P {
+	FONT-SIZE: 13px; LINE-HEIGHT: 20px
+}
+PRE {
+	FONT-SIZE: 13px; LINE-HEIGHT: 20px
+}
+A:visited {
+	TEXT-DECORATION: none
+}
+</STYLE>
+
+<META http-equiv=Content-Language content=zh-cn>
+<META content="MSHTML 6.00.2800.1106" name=GENERATOR>
+<META content=FrontPage.Editor.Document name=ProgId>
+<META http-equiv=Content-Type content="text/html; charset=gb2312"></HEAD>
+<BODY vLink=#0000ff link=#0000ff bgColor=#ffffff>
+<DIV align=center>
+<CENTER>
+<TABLE style="BORDER-COLLAPSE: collapse" borderColor=#00aa00 cellSpacing=0 
+cellPadding=5 width=620 border=1>
+  <TBODY>
+  <TR>
+    <TD bgColor=#d7eec7>
+      <DIV align=center>
+      <P align=center>2002年全国青少年信息学（计算机）奥林匹克分区联赛复赛试题<BR>（提高组 竞赛用时：3 
+    小时）</P></DIV></TD></TR>
+  <TR>
+    <TD>
+      <P class=MsoNormal><SPAN lang=EN-US><FONT color=#0000ff>题一 均分纸牌</FONT>（存盘名 
+      NOIPG1）<BR><FONT color=#000000><B>[问题描述]</B></FONT><BR>　　有 N 堆纸牌，编号分别为 
+      1，2，…, N。每堆上有若干张，但纸牌总数必为 N 的倍数。可以在任一堆上取若于张纸牌，然后移动。<BR>　　移牌规则为：在编号为 1 
+      堆上取的纸牌，只能移到编号为 2 的堆上；在编号为 N 的堆上取的纸牌，只能移到编号为 N-1 
+      的堆上；其他堆上取的纸牌，可以移到相邻左边或右边的堆上。<BR>　　现在要求找出一种移动方法，用最少的移动次数使每堆上纸牌数都一样多。<BR><BR>　　例如 
+      N=4，4 堆纸牌数分别为：<BR>　　①　9　②　8　③　17　④　6<BR>　　移动3次可达到目的：<BR>　　从 ③ 取 4 张牌放到 ④ 
+      （9 8 13 10） -&gt; 从 ③ 取 3 张牌放到 ②（9 11 10 10）-&gt; 从 ② 取 1 张牌放到①（10 10 10 
+      10）。</SPAN></P>
+      <P class=MsoNormal><SPAN lang=EN-US><B>[输 
+      入]</B>：<BR>　　键盘输入文件名。文件格式：<BR>　　N（N 堆纸牌，1 &lt;= N &lt;= 100）<BR>　　A1 A2 … 
+      An （N 堆纸牌，每堆纸牌初始数，l&lt;= Ai &lt;=10000）</SPAN></P>
+      <P class=MsoNormal><SPAN lang=EN-US><B>[输 
+      出]</B>：<BR>　　输出至屏幕。格式为：<BR>　　所有堆均达到相等时的最少移动次数。‘</SPAN></P>
+      <P class=MsoNormal><SPAN lang=EN-US><B>[输入输出样例]</B><BR>a.in：<BR>　4<BR>　9 8 
+      17 6<BR><BR>屏慕显示：<BR>　3<BR></SPAN></P></TD></TR>
+  <TR>
+    <TD height=19>
+      <P><FONT color=#0000ff>题二 字串变换</FONT> （存盘名: 
+      NOIPG2）<BR><B>[问题描述]</B>:<BR>　　已知有两个字串 A$, B$ 
+      及一组字串变换的规则（至多6个规则）:<BR>　　　　　A1$ -&gt; B1$<BR>　　　　　A2$ -&gt; 
+      B2$<BR>　　规则的含义为：在 A＄中的子串 A1$ 可以变换为 B1$、A2$ 可以变换为 B2$ 
+      …。<BR>　　　　例如：A$＝'abcd'　B$＝'xyz'<BR>　　变换规则为：<BR>　　　　‘abc’-&gt;‘xu’　‘ud’-&gt;‘y’　‘y’-&gt;‘yz’<BR><BR>　　则此时，A$ 
+      可以经过一系列的变换变为 
+      B$，其变换的过程为：<BR>　　　‘abcd’-&gt;‘xud’-&gt;‘xy’-&gt;‘xyz’<BR><BR>　　共进行了三次变换，使得 
+      A$ 变换为B$。</P>
+      <P><B>[输入]</B>:<BR>　　键盘输人文件名。文件格式如下：<BR>　　　A$ B$<BR>　　　A1$ B1$ \<BR>　　　A2$ 
+      B2$&nbsp; |-&gt; 变换规则<BR>　　　... ... /&nbsp;<BR>　　所有字符串长度的上限为 20。</P>
+      <P><B>[输出]</B>:<BR>　　输出至屏幕。格式如下：<BR>　　若在 10 步（包含 10步）以内能将 A$ 变换为 B$ 
+      ，则输出最少的变换步数；否则输出"NO ANSWER!"</P>
+      <P><B>[输入输出样例]</B><BR>b.in:<BR>　abcd wyz<BR>　abc xu<BR>　ud y<BR>　y 
+      yz<BR><BR>屏幕显示：<BR>　3<BR>　</P></TD></TR>
+  <TR>
+    <TD height=19>
+      <P><FONT color=#0000ff>题三 
+      自由落体</FONT>（存盘名:NOIPG3）<BR><B>[问题描述]</B>:<BR>　　在高为 H 的天花板上有 n 
+      个小球，体积不计，位置分别为 0，1，2，…．n-1。在地面上有一个小车（长为 L，高为 K，距原点距离为 S1）。已知小球下落距离计算公式为 
+      d＝1/2*g*(t^2)，其中 g=10，t 为下落时间。地面上的小车以速度 V 前进。<BR><BR>　　如下图：<BR><IMG 
+      height=209 src="复赛试题.files/02fstt1.gif" width=601 
+      border=0><BR><BR>　　小车与所有小球同时开始运动，当小球距小车的距离 &lt;= 0.00001 
+      时，即认为小球被小车接受（小球落到地面后不能被接受）。<BR><BR>　　请你计算出小车能接受到多少个小球。</P>
+      <P><B>[输入]</B>：<BR>　　键盘输人：<BR>　　H，S1，V，L，K，n （l&lt;=H，S1，V，L，K，n 
+      &lt;=100000）</P>
+      <P><B>[输出]</B>：<BR>　　屏幕输出：<BR>　　小车能接受到的小球个数。</P>
+      <P><B>[输入输出样例]</B><BR>　[输入]:<BR>　　　5.0 9.0 5.0 2.5 1.8 
+      5<BR>　[输出]:<BR>　　　1<BR></P></TD></TR>
+  <TR>
+    <TD height=19>
+      <P><FONT color=#0000ff>题四 
+      矩形覆盖</FONT>（存盘名NOIPG4）<BR><B>[问题描述]</B>:<BR>　　在平面上有 n 个点（n &lt;= 
+      50），每个点用一对整数坐标表示。例如：当 n＝4 
+      时，4个点的坐标分另为：p1（1，1），p2（2，2），p3（3，6），P4（0，7），见图一。<BR><IMG height=180 
+      src="复赛试题.files/02fstt2.gif" width=670 border=0><BR><BR>　　这些点可以用 k 
+      个矩形（1&lt;=k&lt;=4）全部覆盖，矩形的边平行于坐标轴。当 k=2 时，可用如图二的两个矩形 sl，s2 覆盖，s1，s2 面积和为 
+      4。问题是当 n 个点坐标和 k 给出后，怎样才能使得覆盖所有点的 k 个矩形的面积之和为最小呢。约定：覆盖一个点的矩形面积为 
+      0；覆盖平行于坐标轴直线上点的矩形面积也为0。各个矩形必须完全分开（边线与顶点也都不能重合）。
+      <P><B>[输入]</B>:<BR>　　键盘输人文件名。文件格式为<BR>　　　n k<BR>　　　xl y1<BR>　　　x2 
+      y2<BR>　　　... ...<BR>　　　xn yn （0&lt;=xi,yi&lt;=500)
+      <P><B>[输出]</B>:<BR>　　输出至屏幕。格式为：<BR>　　一个整数，即满足条件的最小的矩形面积之和。
+      <P><B>[输入输出样例]</B><BR>d.in :<BR>　4 2<BR>　1 1<BR>　2 2<BR>　3 6<BR>　0 
+      7<BR><BR>屏幕显示：<BR>4<BR></P></TD></TR>
+  <TR>
+    <TD height=19>
+      <P align=center><A 
+  href="http://oibh.ioiforum.org/">信息学初学者之家</A></P></TD></TR></TBODY></TABLE></CENTER></DIV></BODY></HTML>

@@ -1,0 +1,868 @@
+NOIP 基本算法模块2008年05月09日 星期五 22:44基本算法模块
+For NOIP2007
+Billy.Linux
+
+模块目录
+一、 排序
+1． 选择排序
+2． 插入排序
+3． 冒泡排序
+4． 快速排序
+5． 堆排序
+6． 归并排序
+7． 线性时间排序
+二、 高精度
+1． 高精度比较
+2． 高精度加法
+3． 高精度减法
+4． 单精度乘法
+5． 高精度乘法
+6． 单精度除法
+7． 高精度除法
+8． 进制转换
+三、 数论
+1． 欧几里德算法
+2． 扩展欧几里德
+3． 求最小公倍数
+4． 求解线形同余方程
+5． 素数的判断
+6． 素数的生成
+四、 排列组合
+1． 排列生成算法
+2． 组合生成算法
+3． 排列按序生成法
+4． 排列字典序生成法
+五、 图论
+1． 图的读入
+2． 深度优先搜索
+3． 广度优先搜索
+4． 强连同分量
+5． 拓扑排序
+6． 最小生成树
+7． 最短路径
+六、 背包问题
+1． 装满背包
+2． 一维价值最大背包
+3． 二位价值最大背包
+
+
+一、 排序算法
+var
+a:array[1..maxn]of longint;——排序对象
+1． 选择排序——Select_sort
+procedure select_sort;
+begin
+for i:=1 to n-1 do
+   for j:=i+1 to n do
+if a[i]>a[j] then
+     begin temp:=a[i];a[i]:=a[j];a[j]:=temp;end;
+end;
+2． 插入排序——Insert_sort
+procedure insert_sort;
+begin
+for i:=2 to n do
+begin
+key:=a[i];j:=i-1;
+while (key<a[j])and(j>0) do begin a[j+1]:=a[j];dec(j);end;
+a[j+1]:=key;
+   end;
+end;
+3． 冒泡排序——Bubble_sort
+procedure bubble_sort;
+begin
+for i:=1 to n-1 do
+for j:=n downto i+1 do 
+if a[j]<a[j-1] then
+begin temp:=a[j];a[j]:=a[j-1];a[j-1]:=temp;end;
+end;
+4． 快速排序——Quick_sort
+procedure qsort(s,t:longint);
+var
+   i,j,x:longint;
+begin
+i:=s;j:=t;x:=a[(i+j)div 2];
+repeat
+while a[i]<x do inc(i); {找左边比他大的}
+while a[j]>x do dec(j);{找右边比他小的}
+if i<=j then{交换}
+   begin
+     temp:=a[i];a[i]:=a[j];a[j]:=temp;
+     inc(i);dec(j);
+    end;
+until i>j;
+if s<j then qsort(s,j);
+if i<t then qsort(i,t);
+end;
+5． 堆排序——Heap_sort
+procedure heap(i,n:longint);{将第i个元素向下筛}
+var
+   j,x:longint;
+begin
+j:=i*2;x:=a[i];
+while j<=n do
+begin
+if (j<n)and(a[j]<a[j+1]) then inc(j);
+if x<a[j]
+then begin
+          a[i]:=a[j];i:=j;j:=i*2;
+         end
+else j:=n+1;
+end;
+a[i]:=x;
+end;
+procedure heap_sort;
+begin
+for i:=n div 2 downto 1 do heap(i,n);
+for i:=n downto 2 do
+begin
+   temp:=a[i];a[i]:=a[1];a[1]:=temp;
+   heap(1,i-1);
+end;
+end;
+6． 归并排序——Merge_sort
+procedure mergesort(s,t:longint);
+var
+m,i,j,k:longint;
+begin
+if t-s=0 then exit;
+m:=(s+t)div 2;
+   mergesort(s,m);
+   mergesort(m+1,t);
+   for i:=1 to m-s+1 do b[i]:=a[s+i-1];
+   for j:=m+1 to t do c[j-m]:=a[j];
+   i:=1;j:=1;b[m-s+2]:=max;c[t-m+1]:=max;
+   for k:=s to t do
+    if b[i]<c[j]
+     then begin a[k]:=b[i];inc(i);end
+     else begin a[k]:=c[j];inc(j);end;
+end;
+7． 线性时间排序——基数排序、计数排序、桶排序
+二、 高精度算法——High_precision
+const
+maxcount=进制位
+maxlen=记录高精度数组大小
+type
+bignum=array[0..maxlen]of longint;0为位数
+1． 高精度比较
+function compare(a,b:bignum):longint;
+begin
+    while a[a[0]]=0 do dec(a[0]);{检查位数是否正确}
+    while b[b[0]]=0 do dec(b[0]);
+    while a[a[0]+1]>0 do inc(a[0]);
+    while b[b[0]+1]>0 do inc(b[0]);
+    if a[0]>b[0] then exit(1);
+    if a[0]<b[0] then exit(-1);
+    for i:=a[0] downto 1 do
+     begin
+      if a[i]>b[i] then exit(1);
+      if a[i]<b[i] then exit(-1);
+     end;
+    exit(0);
+end;
+2． 高精度加法
+procedure add(a,b:bignum;var c:bignum);
+var
+   i:longint;
+begin
+fillchar(c,sizeof(c),0);c[0]:=1;
+if a[0]>b[0] 
+then c[0]:=a[0]
+else c[0]:=b[0];
+for i:=1 to a[0] do inc(c[i],a[i]);
+for i:=1 to b[0] do inc(c[i],b[i]);
+   for i:=1 to c[0] do
+    begin
+     inc(c[i+1],c[i] div maxcount);
+     c[i]:=c[i] mod 10;
+   end;
+while c[c[0]+1]>0 do
+    begin
+     inc(c[0]);
+     inc(c[c[0]+1],c[c[0]] div maxcount);
+     c[c[0]]:=c[c[0]] mod maxcount;
+   end;
+end;
+3． 高精度减法
+procedure minus(a,b:bignum;var c:bignum);
+var
+   i:longint;
+begin
+fillchar(c,sizeof(c),0);c[0]:=a[0];
+for i:=1 to c[0] do c[i]:=a[i]-b[i];
+for i:=1 to c[0] do
+if c[i]<0 then
+   begin
+     dec(c[i+1]);
+     inc(c[i],maxcount);
+   end;
+while (c[0]>1)and(c[c[0]]=0) do dec(c[0]);
+end;
+4． 单精度乘法
+procedure mulnum(a:bignum;x:longint,var c:bignum);
+var
+i:longint;
+begin
+   fillchar(c,sizeof(c),0);c[0]:=a[0];
+   for i:=1 to c[0] do c[i]:=a[i]*x;
+   for i:=1 to c[0] do
+    begin
+      inc(c[i+1],c[i] div maxcount);
+      c[i]:=c[i] mod 10;
+    end;
+   while c[c[0]+1]>0 do
+    begin
+     inc(c[0]);
+     inc(c[c[0]+1],c[c[0]] div maxcount);
+     c[c[0]]:=c[c[0]] mod maxcount;
+end;
+end;
+5． 高精度乘法
+procedure mul(a,b:bignum;var c:bignum);
+var
+i,j:longint;
+begin
+   fillchar(c,sizeof(c),0);c[0]:=a[0]+b[0]-1;
+   for i:=1 to a[0] do
+    for j:=1 to b[0] do
+     inc(c[i+j-1],a[i]*b[j]);
+   for i:=1 to c[0] do
+    begin
+      inc(c[i+1],c[i] div maxcount);
+      c[i]:=c[i] mod 10;
+    end;
+   while c[c[0]+1]>0 do
+     begin
+       inc(c[0]);
+       inc(c[c[0]+1],c[c[0]] div maxcount);
+       c[c[0]]:=c[c[0]] mod maxcount;
+     end;
+end;
+6． 单精度除法
+function divnum(a:bignum;x:longint;var c:bignum):longint;
+var
+    i,temp:longint;
+begin
+   fillchar(c,sizeof(c),0);c[0]:=a[0];
+temp:=0;
+for i:=a[0] downto 1 do
+begin
+   temp:=temp*maxcount+a[i];
+   c[i]:=temp div x;
+    temp:=temp mod x;
+end;
+while (c[o]>1)and(c[c[0]]=0) do dec(c[0]);
+exit(temp);
+end;
+7． 高精度除法
+procedure div(a,b:bignum;var c,d:bignum);
+var
+    i:longint;
+begin
+fillchar(c,sizeof(c),0);c[0]:=a[0]-b[0]+1;
+fillchar(d,sizeof(d),0);d[0]:=1;
+for i:=c[0] downto 1 do
+    begin
+     c[i]:=maxcount;
+     repeat
+      dec(c[i]);mul(c,b,temp);
+     until compare(a,temp)>=0;
+    end;
+while (c[o]>1)and(c[c[0]]=0) do dec(c[0]);
+minus(a,temp,d);
+end;
+8． 进制转换
+10进制数用bignum记，maxcount=10
+k进制数用string记
+const
+repchar:array[0..35]of string=(‘0’,‘1’,’2’,……,’a’,’b’,……,’z’);——数码对应的字符
+repnum:array[48..122]of longint=(0,1,2……,34,35);——字符的ASCCI码对应的数码
+k进制转十进制：
+procedure change_to_ten(s:string;k:longint):bignum;
+var
+   i,l:longint;
+   temp:bignum;
+begin
+   l:=length(s);
+   temp[0]:=1;temp[1]:=repnum[ord(s[l])];
+   for i:=1 to l-1 do
+    begin
+     inc(temp[1],repnum[ord(s[l-i])]);
+     mulnum(temp,k);
+    end;
+   exit(temp);
+end;
+十进制转k进制：
+procedure change_to_k(num:bignum;k:longint):string;
+var
+   i,temp:longint;
+   s:string;
+begin
+   if (num[0]=1)and(num[1]=0) then exit(‘0’);
+   while not((num[0]=1)and(num[1]=0)) do
+    begin
+     temp:=divnum(num,k,num);
+     s:=repchar[temp]+s;
+    end;
+   exit(s);
+end;
+三、 数论算法
+1． 求最大公约数——gcd（欧几里德算法）
+递归(recursion)：
+       function gcd(a,b:longint):longint;
+         begin
+           if b=0 then exit(a);
+           exit(gcd(b,a mod b));
+         end;
+非递归(iterative)：
+        function gcd(a,b:longint):longint;
+          var
+           t:longint;
+          begin
+           while b<>0 do
+            begin
+             t:=a;a:=b;b:=t mod b;
+            end;
+          exit(a);
+         end;
+2． 扩展欧几里德算法
+        function extended_euclid(a,b:longint;var x,y:longint):longint;
+          var
+            p,q:longint;
+          begin
+            if b=0 then
+             begin
+               x:=1;y:=0;
+               exit(a);
+             end;
+            p:=extended_euclid(b, a mod b,x,y);
+            q:=x;x:=y;y:=q-a div b *y;
+            exit(p);
+          end;
+3． 求最小公倍数
+k:=a*b div gcd(a,b);
+4． 求解线性同余方程
+type
+ansnode=record
+   ansnum:longint;——解的个数
+   num:array[1..maxnnum]of longint;——解
+end;
+procedure modular_linear_equation(a,b,n:longint;var ans:ansnode);
+var
+   d,i,x,y,temp:longint;
+begin
+   d:=extended_euclid(a,n,x,y);
+   if b mod d <>0
+    then ans.ansnum:=0
+    else begin
+        ans.ansnum:=d;temp:=(x*(b div d))mod n;
+        for i:=1 to d do ans.num[i]:=(temp+i*(n div d))mod n;
+      end;
+end;
+5． 素数的判断
+function prime_bool(x:longint):boolean;
+var
+   i:longint;
+begin
+   for i:=2 to trunc(sqrt(x)) do 
+   if x mod i=0 then exit(false);
+   exit(true);
+end;
+6． 素数的生成
+maxnum=生成质数的范围
+maxprime=对应范围中的质数个数
+var
+prime:array[0..maxprime]of longint;——存储质数
+bool:array[1..maxnnum]of boolean;——存储每个数是不是质数
+procedure prime_make;
+var
+   i,j:longint;
+begin
+   fillchar(bool,sizeof(bool),0);
+   i:=2;
+   while i<=maxnnum do
+    begin
+     if not p[i] then
+      begin
+       j:=2*i;
+       while i<=maxnnum do
+         begin
+          p[j]:=true;
+          inc(j,i);
+         end;
+       inc(prime[0]);prime[prime[0]]:=i;
+      end;
+     inc(i);
+    end;
+end;
+四、 排列组合算法
+1． 排列生成算法——m的n排列
+var
+a:array[0..maxn]of longint;——排列方案
+b:array[0..maxm]of boolean;——每个数是否被用过
+递归(recursion)：
+procedure make_permutation_recursion(t:longint)
+var
+    i:longint;
+begin
+   if t=n+1 then
+    begin
+     write(a[1]);for i:=2 to n do write(‘ ‘,a[i]);writeln;
+     exit;
+    end;
+   for i:=1 to m do
+    if not b[i] then
+     begin
+      b[i]:=true;a[t]:=i;
+      make(t+1);
+      b[i]:=false;
+     end;
+end;
+非递归(iterative)：
+procedure make_permutation_iterative(m,n:longint);
+var
+   i,j:longint;
+begin
+   i:=1;a[1]:=0;
+   repeat
+    j:=a[i]+1;
+    while (j<=m)and(b[j]) do inc(j);
+    if j<=m
+     then begin
+         a[i]:=j;b[j]:=true;
+         if i=n
+          then begin
+              write(a[1]);for j:=2 to n do write(‘ ‘,a[j]);writeln;
+              b[a[n]]:=false;
+             end
+          else begin
+              inc(i);a[i]:=0;
+            end;
+       end
+     else begin
+         dec(i);b[a[i]]:=false;
+       end;
+   until i=0;
+end;
+2． 组合生成算法——m的n组合
+procedure make_combination(t:longint)
+var
+    i:longint;
+begin
+   if t=n+1 then
+    begin
+     write(a[1]);for i:=2 to n do write(‘ ‘,a[i]);writeln;
+     exit;
+    end;
+   for i:=a[t-1] to m do
+    if not b[i] then
+     begin
+      b[i]:=true;a[t]:=i;
+      make(t+1);
+      b[i]:=false;
+     end;
+end;
+3． 排列按序生成法
+const
+power:array[1..maxn]of longint=(…);power[i]为i的阶乘
+type
+permutationnode=array[1..maxn]of longint;——排列方案
+求n的全排的字典序：
+function get_number(n:longint;a:permutationnode):longint;
+var
+   b:array[1..maxn]of longint;
+   i,j,s:longint;
+begin
+   for i:=1 to n do b[i]:=i-1;
+   s:=0;
+   for i:=1 to n-1 do
+    begin
+     inc(s,b[a[i]]*power[n-i]);
+     for j:=a[i]+1 to n do dec(b[j]);
+    end;
+   exit(s+1);
+end;
+求字典序为m的n的全排：
+function get_permutation(m,n:longint;):permutationnode;
+var
+   use:array[1..maxn]of boolean;
+   a:array[0..maxn]of longint;
+   temp:permutationnode;
+begin
+   dec(m);
+   for i:=1 to n-1 do
+    begin
+     a[i]:=m mod (i+1);
+     m:=m div (i+1);
+    end;a[0]:=0;
+   for i:=1 to n do
+    begin
+     j:=0;
+     for k:=1 to a[n-i]+1 do
+      begin
+       inc(j);
+       while use[j] do inc(j);
+      end;
+     temp[i]:=j;use[j]:=true;
+    end;
+   exit(temp);
+end;
+4． 排列字典序生成法——求n的某个全排的下m个字典序排列
+procedure make_next(n,m:longint;a:permutationnode):permutationnode;
+var
+   i,j,k,t,temp:longint;
+begin
+   for t:=1 to m do
+    begin
+     i:=n;
+     while (i>1)and(a[i]<a[i-1]) do dec(i);
+     j:=n;
+     while a[j]<a[i-1] do dec(j);
+     temp:=a[i-1];a[i-1]:=a[j];a[j]:=temp;
+     for k:=i to (i+n)div 2 do
+      begin
+       temp:=a[k];a[k]:=a[n+i-k];a[n+i-k]:=temp;
+      end; 
+    end;
+   exit(a);
+end;
+五、 图论算法
+1． 图的读入
+以点为基础读入（没有特殊说明，一般以此方法读入）：
+var
+vetex:array[1..maxn,0..maxn]of longint;——邻接表，记录与那些点相连
+map:array[1..maxn,1..maxn]of longint;——邻接矩阵，记录点点之间的距离
+procedure initgraph;
+var
+   i,u,v,c:longint;
+begin
+   readln(n,e);
+   for i:=1 to e do
+    begin
+     readln(u,v,c);
+     inc(vetex[u,0]);vetex[u,vetex[u,0]]:=v;
+     map[u,v]:=c;
+   end;
+end；
+以边为基础读入：
+type
+node=record
+   u,v,w:longint;——u为起点，v为终点，w为权
+   end;
+var
+vetex:array[1..maxe]of node;——记录边
+procedure initgraph;
+var
+   i:longint;
+begin
+   readln(n,e);
+   for i:=1 to e do 
+    with vetex[i] do readln(u,v,w);
+end;
+2． 深度优先搜索——DFS
+var
+time:longint;——时间
+flag:array[1..maxn]of boolean;——是否标记
+procedure DFS(t:longint);
+var
+   i:longint;
+begin
+   inc(time);gettime[t]:=time;flag[t]:=true;
+   for i:=1 to vetex[t,0] do
+    if not flag[vetex[t,i]] then
+     begin
+      from[vetex[t,i]]:=t;dep[vetex[t,i]]:=dep[t]+1;
+      DFS(vetex[t,i]);
+     end;
+   inc(time);finishtime[t]:=time;
+end;
+3． 广度优先搜索——BFS
+procedure BFS(t:longint);
+var
+   time,open,closed,i,v:longint;
+   flag:array[1..maxn]of boolean;
+   x0:array[1..maxn]of longint;
+begin
+   fillchar(flag,sizeof(flag),0);
+   open:=0;closed:=1;x0[1]:=t;dep[t]:=0;
+   time:=1;flag[t]:=true;flagtime[t]:=1;
+   repeat
+    inc(open);v:=x0[open];
+    inc(time);finishtime[v]:=time;
+    for i:=1 to vetex[v,0] do
+    if not flag[vetex[v,i]] then
+     begin
+      inc(closed);x0[closed]:=vetex[v,i];
+      flag[vetex[v,i]]:=true;dep[vetex[v,i]]:=dep[v]+1;
+      inc(time);gettime[vetex[v,i]]:=time;
+     end;
+   until open>=closed;
+end;
+4． 强连通分量
+var
+connected:array[1..maxn,0..maxn]of longint;——connect[i,0]为此分量包含的节点数
+total:longint;——强连同分量的个数
+procedure strongly_connected;
+var
+   i,time:longint;
+   flag:array[1..maxn]of boolean;
+   sign:array[1..maxn]of longint;
+procedure sort1(t:longint);
+   var
+    i:longint;
+   begin
+    flag[t]:=true;
+    for i:=1 to n do
+    if (map[t,i]<>0)and(not flag[i]) then 
+     sort1(i);
+    inc(time);sign[time]:=t;
+   end;
+procedure sort2(t:longint);
+   var
+    i:longint;
+   begin
+    flag[t]:=true;
+    for i:=1 to n do
+    if (not flag[i])and(map[i,t]<>0) then
+     sort2(i);
+    inc(connected[total,0]);connected[total,conneted[total,0]]:=t;
+   end;
+begin
+   fillchar(flag,sizeof(flag),0);
+   for i:=1 to n do
+    if not flag[i] then
+     sort1(i);
+   for i:=n downto 1 do
+    if not flag[sign[i]] then
+     begin
+      inc(total);
+      sort(sign[i]);
+     end;
+end;
+5． 拓扑排序
+procedure topological_sort;
+var
+   i,open,closed:longint;
+   flag:array[1..maxn]of boolean;
+begin
+   open:=0;closed:=0;
+   for i:=1 to n do
+    if inv[i]=0 then
+     begin
+      inc(closed);
+      flag[i]:=true;AOV[closed]:=i;
+     end;
+   if closed=0 then exit{error};
+   repeat
+    inc(open);v:=AOV[open];
+    for i:=1 to vetex[v,0] do
+     if not flag[vetex[v,i]] then
+      begin
+       dec(inv[vetex[v,i]]);
+       if inv[vetex[v,i]]=0 then
+        begin
+         inc(closed);
+         AOV[closed]:=vetex[v,i];flag[vetex[v,i]]:=true;
+        end;
+      end;
+   until open=closed;
+   if closed<n then exit{error};
+end;
+6． 最小生成树
+Prime:
+procedure prime_normal;
+var
+    i,j,min,mj:longint;
+    flag:array[1..maxn]of boolean;
+    lowcost:array[1..maxn]of longint;
+begin
+    fillchar(lowcost,sizeof(lowcost),$5F);
+    lowcost[1]:=0;flag[1]:=true;
+    for i:=1 to v[1,0] do
+     lowcost[v[1,i]]:=map[1,v[1,i]];
+    for i:=2 to n do
+      begin
+        min:=maxlongint;
+        for j:=1 to n do
+          if (not flag[j])and(lowcost[j]<min) then
+            begin
+              min:=lowcost[j];mj:=j;
+            end;
+        flag[mj]:=true;inc(totallen,min);
+        for j:=1 to v[mj,0] do
+          if (not flag[v[mj,j]])
+            and(lowcost[v[mj,j]]>map[mj,v[mj,j]]) then
+           lowcost[v[mj,j]]:=map[mj,v[mj,j]];
+      end;
+end;
+Kruskal——以边为基础读入:
+procedure kruskal;
+var
+   set1,set2,vetex_pointer,last_set_num:longint;
+function find(x:longint):longint;
+   begin
+    if father[x]=x then find:=father[x]
+             else begin father[x]:=find(father[x]);find:=father[x];end;
+   end;
+begin
+   qsort(1,e);——对vetex以w为关键字从小到大排序
+   for i:=1 to n do father[i]:=i;
+   vetex_pointer:=1;last_set_num:=n;
+   while (last_set_num>1)and(vetex_pointer<=e) do
+     begin
+      set1:=find(vetex[vetex_pointer].u);
+      set2:=find(vetex[vetex_pointer].v);
+      if set1<>set2 then
+       begin
+        inc(totallen,vetex[vetex_pointer].w);
+        dec(last_set_num);
+        father[set1]:=set2;
+       end;
+      inc(vetex_pointer);
+    end;
+   writeln(totallen);
+end;
+7． 最短路径
+Dijktra:
+procedure Dijkstra(s:longint);
+var
+    i,j,min,mi:longint;
+begin
+   fillchar(shortest,sizeof(shortest),$5F);
+   shortest[s]:=0;
+   for i:=1 to n do
+    begin
+     min:=max;
+     for j:=1 to n do
+      if (not flag[j])and(shortest[j]<min) then
+       begin min:=shortest[j];mi:=j;end;
+     flag[mi]:=true;
+     for j:=1 to vetex[mi,0] do
+      if (not flag[vetex[mi,j]])
+        and(shortest[vetex[mi,j]]>min+map[mi,vetex[mi,j]]) then
+       shortest[vetex[mi,j]]:=min+map[mi,vetex[mi,j]];
+    end;
+end;
+Floyd:
+procedure Floyd;
+var
+   i,j,k:longint;
+begin
+   fillchar(len,sizeof(len),$5F);
+   for i:=1 to n do
+    begin
+     len[i,i]:=0;
+     for j:=1 to vetex[i,0] do
+      len[i,vetex[i,j]]:=map[i,vetex[i,j]];
+    end;
+   for k:=1 to n do
+    for i:=1 to n do
+     for j:=1 to n do
+      if len[i,k]+len[k,j]<len[i,j] then
+       len[i,j]:=len[i,k]+len[k,j];
+end;
+Bellman-ford——以边为基础读入:
+procedure Bellman-ford(s:longint);
+var
+   i,j:longint;
+   bool:boolean;
+begin
+   fillchar(shortest,sizeof(shortest),$5F);shortest[s]:=0;
+   bool:=true;
+   for i:=1 to n-1 do
+    if bool then
+     begin
+      bool:=false;
+      for j:=1 to e do
+       if shortest[vetex[j].v]>shortest[vetex[j].u]+vetex[j].w then
+        begin
+         shortest[vetex[j].v]:=shortest[vetex[j].u]+vetex[j].w;
+         bool:=true;
+       end;
+     end;
+   for j:=1 to e do
+   if shortest[vetex[j].v]>shortest[vetex[j].u]+vetex[j].w then
+    exit(flase);
+   exit(true);
+end;
+SPFA:
+procedure SPFA(s:longint);
+var
+   u,i:longint;
+   x0:array[1..maxn]of longint;
+begin
+   fillchar(shortest,sizeof(shortest),$5f);
+   fillchar(flag,sizeof(flag),0);
+   open:=0;closed:=1;x0[1]:=s;shortest[s]:=0;flag[s]:=true;
+   repeat
+    inc(open);u:=x0[open];
+    for i:=1 to vetex[u,0] do
+    if shortest[vetex[u,i]]<shortest[u]+map[u,vetex[u,i]] then
+     begin
+      shortest[vetex[u,i]]:=shortest[u]+map[u,vetex[u,i]];
+      if not flag[vetex[u,i]] then
+       begin
+        inc(closed);
+        x0[closed]:=vetex[u,i];
+        flag[vetex[u,i]]:=true;
+       end;
+     end;
+    flag[u]:=false;
+   until open>=closed;
+end;
+六、 背包问题
+1． 尽量把容量为w的箱子装满
+var
+f:array[0..maxw]of boolean;
+weight:array[1..maxn]of longint;
+function p1:longint;
+var
+    i,j:longint;
+begin
+    fillchar(f,sizeof(f),0);f[0]:=true;
+    for i:=1 to n do
+      for j:=w downto weight[i] do
+       f[j]:=f[j] or f[j-weight[j]];
+    i:=w;while not f[i] do dec(i);
+    exit(i);
+end;
+2． 在容量为w的箱子中装入物品使总价值最高
+var
+f:array[0..maxw]of longint;
+weight,value:array[1..maxn]of longint;
+function p2:longint;
+var
+    i,j:longint;
+begin
+    fillchar(f,sizeof(f),$FF);f[0]:=0;
+    for i:=1 to n do
+      for j:=w downto weight[i] do
+      if f[j-weight[i]]<>-1 then
+       f[j]:=max(f[j],f[j-weight[i]]+value[i]);
+    j:=0;for i:=0 to w do j:=max(j,f[i]);
+    exit(j);
+end;
+3． 在满足两个量的限制(w,h)条件下使总价值最高
+type
+node=record
+    w,h:longint;
+    value:longint;
+   end;
+var
+f:array[0..maxw,0..maxh]of longint;
+num:array[1..maxn]of node;
+function p3:longint;
+var
+    i,j:longint;
+begin
+    fillchar(f,sizeof(f),$FF);f[0,0]:=0;
+    for i:=1 to n do
+      for j:=w downto num[i].w do
+       for k:=h downto num[i].h do
+        if f[j-num[i].w,k-num[i].h]<>-1 then
+         f[j,k]:=max(f[j,k],f[j-num[i].w,k-num[i].h]+num[i].value);
+    i:=0;
+    for j:=0 to w do
+     for k:=0 to h do i:=max(i,f[j,k]);
+    exit(i);
+end;
+ 

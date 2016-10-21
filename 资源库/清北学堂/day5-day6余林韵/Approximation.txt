@@ -1,0 +1,43 @@
+#include <string>
+#include <algorithm>
+#include <cstdlib>
+#include <cstdio>
+#include <iostream>
+
+using namespace std;
+
+class BestApproximationDiv1{
+	public:
+		int bestA, bestB, best;
+		int calc(int x, string number)
+		{
+			int res = 1;
+			int last = 100000;
+			for (int i = 2; i < number.length(); i ++)
+			{
+				if (number[i] - '0' != (x / last) % 10)	break;
+				last /= 10;
+				res ++;
+			}
+			return res;
+		}
+		string findFraction(int maxDen, string number)
+		{
+			bestA = bestB = best = 0;
+			int u;
+			for (int i = 1; i <= maxDen; i ++)
+				for (int j = 0; j < i; j ++)
+					if ((u = calc(j * 1000000/i, number)) > best)
+					{
+						best = u;
+						bestA = j;
+						bestB = i;
+					}
+			char ans[500];
+			sprintf(ans, "%d/%d has %d exact digits\0", bestA, bestB, best);
+			string res = "";
+			for (int i = 0; i < strlen(ans); i ++)
+				res += ans[i];
+			return res;
+		}
+};

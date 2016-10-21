@@ -1,0 +1,148 @@
+Type
+	Tnode = record
+		p, r	: Integer;	//[p, r)
+		m	: Integer;
+
+		left, right : Integer;	//左子树，右子树
+
+		sum	: Integer;	//区间和
+	end;
+
+Const	
+	LimitN = 12345;
+
+Var
+	tree	: Array[1..LimitN * 2] of Tnode;
+	top	: Integer;
+
+	N	: Integer;
+	A	: Array[1..LimitN] of Integer;
+
+//建立线段树
+
+procedure BuildTree (u : Integer);
+begin
+	if (tree[u].p + 1 = tree[u].r) then
+	begin
+		tree[u].sum := A[ tree[u].p ];
+		exit;
+	end;
+
+	tree[u].m := (tree[u].p + tree[u].r) div 2;
+
+	inc(top);
+	tree[u].left := top;
+	tree[ tree[u].left ].p := tree[u].p;
+	tree[ tree[u].left ].r := tree[u].m;
+	BuildTree( tree[u].left );
+
+	inc(top);
+	tree[u].right := top;
+	tree[ tree[u].right ].p := tree[u].m;
+	tree[ tree[u].right ].r := tree[u].r;
+	BuildTree( tree[u].right );
+
+	tree[u].sum := tree[tree[u].left].sum 
+			+ tree[tree[u].right].sum;
+end;
+
+top := 1;
+tree[1].p := 1;
+tree[1].r := N + 1;
+BuildTree ( 1 );
+
+
+// 查询  [a, b] -> [a, b+1)
+
+//[a, b)
+Function Query(u, a, b : Integer) : Integer;
+var
+	ans : Integer;
+begin
+	if (tree[u].p = a) and (tree[u].r = b) 
+		then exit ( tree[u].sum );
+
+	//[a, b)
+
+	if (b <= tree[u].m)
+		ans := Query(tree[u].left, a, b);
+	else if (a >= tree[u].m)
+		ans := Query(tree[u].right, a, b);
+	else
+		ans := Query(tree[u].left, a, tree[u].m)
+		     + Query(tree[u].right, tree[u].m, b);
+		     
+	exit ( ans );
+end;
+
+Writeln( Query(1, a, b+1) );
+
+// 修改
+// A[x] := v;
+
+
+Procedure Modify(u, x, v: Integer);
+begin
+	if (tree[u].p + 1 = tree[u].r) then
+	begin
+		tree[u].sum := v;
+		exit;
+	end;
+
+	if (x < tree[u].m)
+		then Modify(tree[u].left, x, v);
+		else Modify(tree[u].right, x, v);
+
+	tree[u].sum :=
+		  tree[ tree[u].left ].sum
+		+ tree[ tree[u].right ].sum;
+end;
+
+
+
+Modify(1, x, v);
+
+
+
+
+---------------------------------------------
+线段树短
+
+假设N = 2^k
+
+N1 := 1;
+repeat N1 := N1 * 2; until N1 >= N;
+N = 2^k
+
+sum : Array[1..2N] of Integer; //sum[i]
+
+//初始化
+for i := 1 to N do
+	sum[ N + i - 1 ] := A[i];
+for i := N - 1 downto 1 do
+	sum[i] := sum[i * 2] + sum[i * 2 + 1];
+
+
+//改值  A[x] -> v
+sum[N + x - 1] := v;
+u := (N + x - 1) div 2;
+while u > 0 do
+begin
+	sum[u] := sum[u * 2] + sum[u * 2 + 1];
+	u := u div 2;
+end;
+
+//查询 [a, b)
+function query(u,p,r,a,b: Integer);
+begin
+	if (p = a) and (r = b) then exit ( sum[u] );
+	m := (p + r) div 2;
+	if (b <= m) then
+		ans := query(u*2, p, m, a, b);
+	else if (a >= m) then
+		ans := query(u*2+1, m, r, a, b);
+	else
+		ans := query(u*2, p, m, a, m) + 
+			query(u*2+1, m, r, m, b);
+	exit(ans);
+end;

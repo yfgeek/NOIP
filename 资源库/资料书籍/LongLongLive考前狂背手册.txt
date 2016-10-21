@@ -1,0 +1,783 @@
+----------------------- Page 1-----------------------
+
+LongLongLive 
+ChairmanMao 
+NOIP 
+考前 
+狂背手册 
+
+----------------------- Page 2-----------------------
+
+PROGRAM ConverxHull; 
+
+x,y:[] of double; 
+a,op,s,n,i,j,k; 
+Stack:[] 
+ans,minx,miny; 
+Function turnRight(x1,y1,x2,y2) 
+Exit(x1*y2-x2*y1<-zero); 
+Function Right(a,b,c:longint):boolean; 
+y2:=y[c]-y[b]; x2:=x[c]-x[b]; 
+x1:=x[b]-x[a]; y1:=y[b]-y[a]; 
+Exit(turnRight(x1,y1,x2,y2)); 
+{main} Begin 
+readln(n); minx:=1e9; miny:=1e9; 
+For i:=1 to n do Begin 
+    readln(x[i],y[i]); 
+    if x[i]<minx-zero Then Begin 
+      minx:=x[i]; miny:=y[i]; 
+    END; 
+    if abs(x[i]-minx)<min Then 
+        if y[i]<miny Then miny:=y[i]; 
+END; 
+s:=1; 
+For i:=1 to n do Begin 
+      x[s]:=x[i]-minx; 
+      y[s]:=y[i]-miny; 
+      if abs(x[s])+abs(y[s])>zero Then inc(s); 
+END; 
+s:=n-1; 
+Qsort(1,s); 
+x[0]:=0; y[0]:=0; 
+Stack[1]:=0; 
+Stack[2]:=1; 
+top:=2; 
+For i:=2 to s do Begin 
+While (Right(Stack[top-1],Stack[top],i)) 
+and(top>1) do 
+        dec(top); 
+    inc(top); 
+    Stack[top]:=i; 
+END;        // Stack[] is the ConverxHull 
+END. 
+
+----------------------- Page 3-----------------------
+
+PROGRAM BaseFlow; 
+var s,t,n,m,i,a,b,p:longint; 
+F,C:array[,] 
+del,det,list:array[] 
+vised:array[] of boolean; 
+Procedure Change(e,x:longint); 
+var i:longint; 
+Begin 
+i:=e; 
+While i<>1 do Begin 
+    if del[i]<0 Then 
+        inc(F[list[-del[i]],list[i]],x) 
+    Else 
+        dec(F[list[i],list[del[i]]],x); 
+    i:=abs(del[i]); 
+END; 
+END; 
+Function Find(s,td:longint):longint; 
+var h,e,i:longint; 
+Begin 
+list[1]:=s; h:=1; e:=1; FillChar(vised, ,false); 
+vised[s]:=true; 
+det[h]:=maxlongint; 
+While h<=e do Begin 
+    t:=list[h]; 
+    For i:=1 to n do  Begin 
+        if not vised[i] Then 
+            if F[t][i]<C[t][i] Then Begin 
+               inc(e);  list[e]:=i; 
+               vised[i]:=true;  del[e]:=-h; 
+               if C[t][i]-F[t][i]>det[h] Then 
+                   det[e]:=det[h] 
+               Else 
+                   det[e]:=C[t][i]-F[t][i]; 
+           END; 
+        if not vised[i] Then 
+           if (F[i][t]>0) Then Begin 
+               inc(e);  list[e]:=i; 
+               del[e]:=h; vised[i]:=true; 
+               if F[i][t]>det[h] Then 
+                   det[e]:=det[h] 
+
+----------------------- Page 4-----------------------
+
+                  Else 
+                       det[e]:=F[i][t]; 
+             END; 
+          if vised[td] Then Begin 
+               Change(e,det[e]);  Exit(det[e]); 
+          END; 
+     END; 
+     inc(h); 
+END; 
+Exit(0); 
+END; 
+Function maxFlow(s,t:longint):longint; 
+var ff:longint; 
+Begin 
+FillChar(F,sizeof(F),0); 
+maxFlow:=0; 
+REPEAT 
+       ff:=Find(s,t); 
+       maxFlow:=maxFlow+ff; 
+UNTIL ff=0; 
+END; 
+
+----------------------- Page 5-----------------------
+
+PROGRAM Hungary; 
+var ans,n,m,i,j:longint; 
+     link,num:array[] of longint; 
+     vis:array[] of boolean; 
+
+     side:array[][] of longint; //邻接表 
+Function Find(x:longint):boolean; 
+var i:longint; 
+Begin 
+For i:=1 to num[x] do 
+     if not vis[side[x][i]] Then Begin 
+        vis[side[x][i]]:=true; 
+        if link[side[x][i]]=0 Then Begin 
+            link[side[x][i]]:=x; 
+            Exit(true); 
+        END 
+        Else 
+           if Find(link[side[x][i]]) Then Begin 
+              link[side[x][i]]:=x; 
+              Exit(true); 
+           END; 
+END; 
+Find:=false; 
+END; 
+{Main} 
+Begin 
+ans:=0; 
+FillChar(link,sizeof(link),0); 
+For i:=1 to n do Begin 
+     FillChar(vis,sizeof(vis),false); 
+     if Find(i) Then inc(ans); 
+END; 
+END. 
+
+----------------------- Page 6-----------------------
+
+PROGRAM Treap; 
+var w,rnd,l,r,size:array[0..] of longint; 
+    tmp,root,i,id,j,sz,n,m:longint; 
+ch:char; 
+Procedure LeftRotate(var root:longint); 
+var ch:longint; 
+Begin 
+ch:=r[root]; 
+r[root]:=l[ch]; 
+if ch<>0 Then l[ch]:=root; 
+size[root]:=size[l[root]]+size[r[root]]+1; 
+if ch<>0 Then size[ch]:=size[l[ch]]+size[r[ch]]+1; 
+root:=ch; 
+END; 
+Procedure RightRotate(var root:longint); 
+var ch:longint; 
+Begin 
+ch:=l[root]; 
+l[root]:=r[ch]; 
+if ch<>0 Then r[ch]:=root; 
+size[root]:=size[l[root]]+size[r[root]]+1; 
+if ch<>0 Then size[ch]:=size[l[ch]]+size[r[ch]]+1; 
+root:=ch; 
+END; 
+Procedure Insert(var root:longint; x:longint); 
+Begin 
+if w[root]=0 Then Begin 
+    w[root]:=x; 
+    rnd[root]:=random(100000); 
+    size[root]:=1; 
+    Exit; 
+END; 
+if w[root]>=x Then Begin 
+    if l[root]=0 Then Begin 
+       inc(sz); 
+       l[root]:=sz; 
+    END; 
+    Insert(l[root],x); 
+    if rnd[l[root]]<rnd[root] Then 
+        RightRotate(root); 
+    size[root]:=size[l[root]]+size[r[root]]+1; 
+
+----------------------- Page 7-----------------------
+
+END 
+Else Begin 
+    if r[root]=0 Then Begin 
+       inc(sz); 
+       r[root]:=sz; 
+    END; 
+    Insert(r[root],x); 
+    if rnd[r[root]]<rnd[root] Then 
+       LeftRotate(root); 
+    size[root]:=size[l[root]]+size[r[root]]+1; 
+END; 
+END; 
+Function GetFirst(root:longint):longint; 
+var k:longint; 
+Begin 
+While true do Begin 
+if l[root]=0 Then Exit(root); 
+root:=l[root]; 
+END; 
+END; 
+Procedure Delete(var root:longint; x:longint); 
+var tmp:longint; 
+Begin 
+if root=0 Then Exit; 
+if w[root]<x Then Begin 
+    Delete(r[root],x); 
+    size[root]:=size[l[root]]+size[r[root]]+1; 
+    END 
+Else if w[root]>x Then Begin 
+    Delete(l[root],x); 
+    size[root]:=size[l[root]]+size[r[root]]+1; 
+    END 
+Else Begin 
+      if l[root]+r[root]=0 Then Begin 
+        size[root]:=0; 
+        root:=0; 
+        Exit; 
+      END; 
+      if l[root]=0 Then Begin 
+        root:=r[root]; 
+        Exit; 
+
+----------------------- Page 8-----------------------
+
+    END; 
+    if r[root]=0 Then Begin 
+      root:=l[root]; 
+      Exit; 
+    END; 
+    tmp:=GetFirst(r[root]); 
+    w[root]:=w[tmp]; 
+    w[tmp]:=x; 
+    Delete(r[root],x); 
+    size[root]:=size[l[root]]+size[r[root]]+1; 
+END; 
+END; 
+Function getkth(root,k:longint):longint; 
+Begin 
+if size[l[root]]=k-1 Then Exit(root); 
+if size[l[root]]<k-1 Then Exit(getkth(r[root],k-size[l[root]]-1)); 
+Exit(getkth(l[root],k)); 
+END; 
+{Main}Begin 
+readln(n,m); 
+FillChar{w;rnd;l;r;size} 
+sz:=0; 
+For i:=1 to m do Begin 
+   read(ch); 
+   read(id); 
+   if root=0 Then Begin 
+      inc(sz); 
+      root:=sz; 
+      rnd[root]:=random(10000); 
+      w[root]:=id; 
+      continue; 
+   END; 
+   if ch='i' Then Insert(root,id); 
+   if(ch='d')Then Begin 
+     tmp:=getkth(root,id); 
+     writeln(w[tmp]); 
+     Delete(root,w[tmp]); 
+   END; 
+END; 
+END. 
+
+----------------------- Page 9-----------------------
+
+PROGRAM QuickSort; 
+var a:array[1..1000000] of longint;                        n,i:longint; 
+Procedure Qsort(l,r:longint); 
+var i,j,x,y:longint; 
+Begin 
+if l>r-10 Then Begin 
+    For i:=l to r-1 do 
+   For j:=i+1 to r do 
+     if a[i]>a[j] Then Begin 
+    y:=a[i]; a[i]:=a[j]; a[j]:=y; 
+   END; 
+    Exit; 
+END Else Begin 
+     i:=l; j:=r; x:=a[(l+r) shr 1]; 
+REPEAT 
+    While a[i]<x do inc(i); 
+    While a[j]>x do dec(j); 
+    if i<=j Then Begin 
+    y:=a[i]; a[i]:=a[j]; a[j]:=y; 
+            inc(i); dec(j); 
+    END; 
+UNTIL i>j; 
+if i<r Then Qsort(i,r); 
+if l<j Then Qsort(l,j); 
+END; 
+END; 
+
+PROGRAM Heap_Sort; 
+Procedure Shift(x,n:longint); 
+var t,p,q:longint; 
+Begin 
+q:=a[x]; t:=x+x; 
+While t<=n do Begin 
+    if (t<n) Then 
+       if a[t]<a[t+1] Then inc(t); 
+    if q<a[t] Then Begin 
+       a[t shr 1] := a[t]; 
+       t:=t shl 1; 
+    END 
+    Else Exit; 
+
+----------------------- Page 10-----------------------
+
+      a[t shr 1]:=q; 
+END; 
+END; 
+Procedure Heapsort(n:longint); 
+var i,x:longint; 
+Begin 
+For i:=n shr 1 downto 1 do 
+      Shift(i,n); 
+For i:=n downto 1 do Begin 
+      x:=a[i]; a[i]:=a[1]; a[1]:=x; 
+      Shift(1,i-1); 
+END; 
+END; 
+
+----------------------- Page 11-----------------------
+
+PROGRAM LCA_Tarjan; 
+Procedure Lca(u:vertex); 
+Begin 
+Makeset(u); 
+Ancestor[u]:=u; 
+For each child v of u do Begin 
+      LCA(v); 
+      Union(u,v); 
+      Ancestor[getfa(u)]:=u; 
+END; 
+Vised[u]:=true; 
+For each node v that {u,v} is asked do 
+     If vised[v] Then 
+          Print “LCA or U and V is ancestor[getfa(v)]” 
+END; 
+
+----------------------- Page 12-----------------------
+
+Function kmppos(t,s):longint; 
+var i,k:longint; 
+Begin 
+k:=0; p[1]:=0; 
+For i:=2 to length(t) do Begin 
+    While (k<>0)and(t[k+1]<>t[i]) do 
+        k:=p[k]; 
+    if t[k+1]=t[i] Then inc(k); 
+    p[i]:=k; 
+END; 
+k:=0; 
+For i:=1 to length(s) do Begin 
+    While (k<>0)and(t[k+1]<>s[i]) do 
+      k:=p[k]; 
+    if t[k+1]=s[i] Then inc(k); 
+    if k=length(t) Then 
+      Exit(i-length(t)+1); 
+END; 
+kmppos:=0; 
+END; 
+Function RKpos(t,s):longint; 
+const bigprime=19901107; 
+var si,q,k:int64; i:longint; 
+Begin 
+q:=0; 
+For i:=1 to length(T) do 
+q:=(q*131 + ord(t[i]) ) mod bigprime; 
+si:=1; 
+For i:=2 to length(t) do si:=(si*131) mod bigprime; 
+k:=0; 
+For i:=1 to length(t) do 
+k:=(k*131 + ord(s[i])) mod bigprime; 
+if k=q Then Exit(1); 
+For i:=length(t)+1 to length(s) do Begin 
+k:=(k-ord(s[i-length(t)])*si) mod bigprime+bigprime; 
+k:=(k*131+ord(s[i])) mod bigprime; 
+if k=q Then Exit(i-length(t)+1); 
+END; 
+Exit(0); 
+END; 
+
+----------------------- Page 13-----------------------
+
+PROGRAM EulerTour; 
+
+var sid:array[,] of longint; //邻接表 
+    ba,r,a,b,n,min,max,m,i,j,k:longint; 
+    d:array[1..500] of longint; 
+    len:longint; 
+   sta, ans:array[0..2000] of longint; 
+   flag:boolean; 
+Begin 
+len:=0; r:=0; 
+
+k:=1; //k为开始点（noans?!） 
+REPEAT 
+flag:=true; 
+For each side <k,sid[k][i]> that exists do Begin 
+       delside(sid[k][i],k); 
+       ba:=sid[k][i]; 
+       delside(k,sid[k][i]); 
+       inc(r); 
+       sta[r]:=k; 
+       k:=ba; 
+       flag:=false; 
+       break; 
+    END; 
+if flag Then Begin 
+    inc(len); 
+    ans[len]:=k; 
+    k:=sta[r]; 
+    dec(r); 
+END; 
+UNTIL r<0; 
+For i:=len downto 1 do 
+writeln(ans[i]); 
+END. 
+
+----------------------- Page 14-----------------------
+
+PROGRAM Bignumbers; 
+type bignum=record num:array[]; l:longint; END; 
+var s1,s2:string; 
+    i:longint; 
+a,b:bignum; 
+Procedure conv(s:string; var x:bignum); 
+var i:longint; 
+Begin 
+FillChar(x,sizeof(x),0); 
+with x do Begin 
+l:=length(s); 
+For i:=1 to length(s) do 
+    num[i]:=ord(s[length(s)-i+1])-48; 
+END; 
+END; 
+Procedure Plus(var a:bignum; b:bignum); 
+var k,i:longint; 
+Begin 
+k:=max(a.l,b.l); 
+For i:=1 to k do Begin 
+    inc(a.num[i],b.num[i]); 
+inc(a.num[i+1],a.num[i] div 10); 
+a.num[i]:=a.num[i] mod 10; 
+END; 
+While a.num[k+1]<>0 do Begin 
+    inc(k); 
+a.num[k+1]:=a.num[k] div 10; 
+a.num[k]:=a.num[k] mod 10; 
+END; 
+a.l:=k; 
+END; 
+Procedure Minus(var a:bignum; b:bignum); 
+var k,i:longint; 
+Begin 
+k:=a.l; 
+For i:=1 to k do Begin 
+    dec(a.num[i],b.num[i]); 
+While a.num[i]<0 do Begin 
+   inc(a.num[i],10); 
+   dec(a.num[i+1]); 
+END; 
+
+----------------------- Page 15-----------------------
+
+END; 
+While (k>1)and(a.num[k]=0) do dec(k); 
+a.l:=k; 
+END; 
+Procedure Multi(var a:bignum;b:bignum); 
+var t:bignum; i,j:longint; 
+Begin 
+FillChar(t,sizeof(t),0); 
+For i:=1 to a.l do 
+   For j:=1 to b.l do 
+  inc(t.num[i+j-1],a.num[i]*b.num[j]); 
+j:=a.l+b.l; 
+For i:=1 to j do Begin 
+   inc(t.num[i+1],t.num[i] div 10); 
+t.num[i]:=t.num[i] mod 10; 
+END; 
+While t.num[j]=0 do Begin dec(j); if j=1 Then break; END; 
+t.l:=j; 
+a:=t; 
+END; 
+Procedure Print(a:bignum); 
+var i:longint; 
+Begin 
+For i:=a.l downto 1 do 
+   write(a.num[i]); 
+writeln; 
+END; 
+
+----------------------- Page 16-----------------------
+
+PROGRAM Extended_GCD; 
+var a,b,x,y,d:longint; 
+Function extendedgcd(a,b:longint):longint; 
+var t,d:longint; 
+Begin 
+if a mod b= 0 Then Begin 
+     x:=0; y:=1; 
+     Exit(b); 
+END; 
+d:=extendedgcd(b, a mod b); 
+// bx+(a- (a div b)*b) y = d 
+// ay+ (x-(a div b)*y)*b  = d 
+t:=x; 
+x:=y; 
+y:=t-(a div b)*y; 
+Exit(d); 
+END; 
+{Main}Begin 
+d:=extendedgcd(a,b); 
+writeln(a,'*',x,'+',b,'*',y,'=',d); 
+END. 
+
+----------------------- Page 17-----------------------
+
+PROGRAM Treearray; 
+Function get(a:longint):longint; 
+Begin 
+get:=0; 
+While a>0 do Begin 
+      if x[a]>get Then get:=x[a]; 
+      dec(a, a and (a xor (a-1))); // a and –a; 
+END; 
+END; 
+Procedure update(a,tmp:longint); 
+Begin 
+While a<=mx do Begin 
+    if tmp>x[a] Then x[a]:=tmp; 
+    inc(a, a and (a xor (a-1))); 
+END; 
+END; 
+
+----------------------- Page 18-----------------------
+
+强连通分量：正向DFS，访问完一个节点以后入栈。反向所有的边，按栈进行DFS。 
+最小点基：连通分量收缩为1个点，入度为0。 
+procedure Gaess_solve(var c:node); 
+var i,j,k:longint; 
+   now:double; 
+   vised:array[1..100] of boolean; 
+   lis:array[1..100] of longint; 
+begin 
+fillchar(vised,sizeof(vised),false); 
+for i:=1 to n do begin 
+   j:=1; 
+while ((abs(a[j][i])<=zero)or(vised[j]))and(j<n) do  inc(j); 
+   vised[j]:=true; 
+   lis[i]:=j; 
+   if abs(a[j][i])<=zero then continue; 
+   for k:=1 to n do if not vised[k] then 
+      minus(k,j,a[k][i]/a[j][i]); 
+end; 
+for i:=1 to n do begin 
+   now:=0; 
+   for j:=1 to n do now:=now+abs(a[i][j]); 
+   if (abs(now)<zero) and (abs(b[i])>zero) then noans; 
+end; 
+for i:=n downto 1 do begin 
+   now:=b[lis[i]]; 
+   if a[lis[i]][i]=0 then allans; 
+   for j:=1 to n do 
+     now:=now-a[lis[i]][j]*c[j]; 
+   c[i]:=now/a[lis[i]][i]; 
+end; 
+end; 
+
+----------------------- Page 19-----------------------
+
+让我们来写搜索，BFS or DFS （搜索专练里面好多的例子） 
+不要忘了去剪枝，可行性&最优性（生日蛋糕就是很好的例子） 
+With hash is faster（字串变换） 
+sorted is more faster（搜索专练——蛋链） 
+贪心DP做预处理（这个题可以用贪心或者错误的DP得到一个较优的答案，做剪枝） 
+不要怕他T L E 
+写个搜索万能的算法 
+转个对象就是好方法（某公共汽车路线） 
+让搜索的Procedure AC it 
+即使不能AC 也能有分~ 
+
+----------------------- Page 20-----------------------
+
+当函数w[i,j]满足四边形性质时，称w满足四边形不等式。（有包含部分的w和起来更大一些） 
+当函数w[i,j]满足w[i’,j]≤w[i,j’] 时称w关于区间包含关系单调。 
+同时由d[i]≥0,t[i]≥0可知w[i,j]满足单调性。 
+黑书上面说： 
+1、对于2d/1d方程，如果w[j]满足了四边形、区间单调，那么f也满足四边形不等式。 
+2、如果满足第一条，那么取得最小值的决策K[i,j] 是单调的 K[i,j-1]<=k[i,j] <= 
+k[i+1,j] 
+
+3、w满足四边形不等式，令i'=i+1, j'=j+1 ，那么， 
+w[i,j]+w[i+1,j+1]<=w[i+1,j]+w[i,j+1] 
+
+实际应用时，一般可以猜出凸单调性。 
+一维 for j:=minj to i do 
+  f[i]= operation{f[j]+w[j，i]} 
+二维 for k:=mink to i-1 do 
+   f[i，j]= operation{f[k,j]+w[k or k+1,j]} 
+01背包： 
+   f[i,j] =min{f[i-w[j],j-1]+w[j], f[i,j-1]} 
+
+滚动数组： 
+    f[i]:=min{fpre[i-w[j]]+w[j] , fpre[i]} 
+
+downto： f[i]:=min{f[i-w[j]]+w[i], f[i]} 
+多维空间转移 
+f[i,j]:=operation{f[i-1,j]+w1,f[i,j-1]+w2} 
+
+最小矩阵乘法2d/2d 
+for k:=i+1 to j-1 do 
+  f[i,j]:=min{f[i,k]+f[k,j] +w(i,j,k) } 
+
+石子归并 
+  F[i,j]=min{f[i,k]+f[k+1,j]}+w[i,j] 
+
+----------------------- Page 21-----------------------
+
+最重要的是细节 
+
+1. 文件输入输出 
+2. Close before HALT 
+
+3. 注释！ 
+4. 变量赋初值，全局变量也不例外。 
+5. DP 初始值、边界情况 
+6. -0 <> 0 
+
+7. 坐标~~~又是坐标~~~。横纵，行列， 
+8. 人工inline。 
+9. 记忆化没记忆等于TLE。 
+10. fillchar要做好 
+11. While/ for 之后的begin end 
+12. 10^8有9位，不是8位。 
+13. Int64不能用Read,也不能直接赋给一个大于Longint的值。 
+14. 非等差循环用while不用for. 
+15. 凡是分母为变量的除法、Div、Mod都需要想一想是否要判0 
+16. 删除屏幕输出！ 
+17. 不要总把logn忽略掉。 
+18. 有时候要有意采用ln,exp变*为+ 
+19. Gcd,Mod,Div的使用都应该注意正负。 
+20. 实数运算永远记住用Zero! 
+21. 聚焦边界！ 
+22. 非明文禁止者，皆不无可能。 
+23. 算数要准确，比如bignum的范围 
+24. 文件名切记要使用小写！ 
+
+----------------------- Page 22-----------------------
+
+关于算法与策略 
+
+1. 看审题画在卷子上的线 
+2. 超时的搜索/DP往往能比错误的贪心得到更多的分。 
+3. 专用的方法胜于通用的方法。 
+4. 好题往往不能直接经典算法 
+5. n,n^2 n很小时差不多 
+6. 如果一个数学问题很复杂，那么看结果找规律有可能比数学推导快。 
+7. 即使是多项式算法，有时也可以加入很有效的剪枝。 
+8. 矩阵的统计问题，降维策略，在外层用土方法，内层使用优化过的方法。 
+9. 用O(N*N)枚举出Y1,Y2,然后考察之间夹的矩形是非常常用的方法。 
+10. 涉及01串的问题，都不要忘记位运算和压缩，同时也要小心。 
+11. 对于判重问题，关注最小表示。 
+12. 对于想不出算法的题目，先有序化！ 
+13. 子序列之和的问题Sb-Sa 
+14. 对于一边明显长于另外一边的矩形问题 
+15. 没有回溯的搜索是最成功的搜索 
+16. 最大规模的数据非常难设计，就不要管他 
+17. 尽量让不做已做过的事和显然没有必要的事 
+18. 不要解决无用的子问题和对结果进行无意义的引用 
+19. 一般情况下，根据数据规模猜算法是非常有效的 
+20. Qsort算法要注意应该先存储选为基点的那个数以后再比较 
+21. 关注最内层的循环到底在干什么 
+22. 在只涉及乘除的高精度运算中，按因数存储 
+23. DFS之后森林不是树，重边？ 
+24. 优化的是针对大多数情况，不是特殊情况 
+25. 即使是自己建的图中也有可能出现重边 
+26. “不超前”属性的引入可以使复杂度降低一个数量级。 
+27. DP 的Downto 应用 
+28. 变量的取值范围与计算公式同等重要。 
+29. 博弈问题从残局或结局出发 
+30. 涉及单词的问题，对每个单词记录起止点，这样就充分利用了空间。 
+31. 邻接矩阵+邻接链表 
+32. 不如笨拙的枚举各种情况，只是注意在Copy&Paste的时候不要出错。 
+33. 考虑坐标的定义是基于最小区间的还是基于点的。 
+34. 双向搜索，就两边分别写过程 
+35. 很多时候，输入的两个数据并没有说明两者的大小关系！ 
+36. 枚举的时候不要忘记想一想是用To还是Downto更好。 
+37. 编写DFS之前一定要先考虑最坏的情况下栈空间是否够用。 
+38. A mod 8=A and 7 
+
+39. 反复调用子程序。 
+
+----------------------- Page 23-----------------------
+
+40. FP中不要使用集合 
+41. 用(a-b+c) mod c而不是(a-b) mod c 
+42. 在很多情况下，Xor运算可以使代码更简洁高效。 
+43. 只去做题目说的东西，不要假设任何题目没有提及到的条件。 
+44. 表达式处理中注意形如(a+b)*(c+d)的括号。 
+45. 有少数题目不是按照先行后列的方式组织数据的，这一点要格外注意。 
+46. 当对程序有利时浪费内存。 
+47. 使用预处理。 
+48. 注意对称性。 
+
+----------------------- Page 24-----------------------
+
+关于Debug 
+
+1. 测试数据只是用来发现错误，而不是用来改正错误的 
+2. 可以稍稍加大上下界 
+3. 调试的时候，常常可以编一个非常非常易编的程序，采用算两次的方法，不过前提是必须 
+保证正确。 
+4. Writeln最笨最准确。 
+5. 调试时每发现一个错误，都最好浏览一下整个程序(Pated) 
+6. 很可能错误在其他地方。 
+7. 初状态=末状态 初状态和末状态存在可操作的决策 
+8. 给函数赋返回值 
+9. 各种边界和特殊情况。 
+10. 自测时千万不要忘测数据上限 
+11. 之后仔细察看Const中的数。 
+12. 所以尽量避免开过大的数组及其调试。 
+
+----------------------- Page 25-----------------------
+
+不要慌！ 
+1. 比赛不要轻易删文件，尤其不要加通配符。 
+2. 经常保存程序。 
+3. 不同版本的程序不要相互覆盖。 
+4. 提交的程序不要搞错版本。 
+5. 最后5分钟。一定都要再编译一遍。 
+6. 注意数据类型的选择，数组的大小和内存限制 
+7. 保留所有版本的程序。 
+
+----------------------- Page 26-----------------------
+
+我的语录 
+
+1. 用常用的 
+2. 注意数据限制 
+3. 仅凭一时的“感觉”来编程往往是漏洞百出。 
+4. 为了调试方便而修改了的常量，提交时要改回来。 
+5. Qsort Stackoverflow 
+
+6. 要相信自己的Cheat能力和编程能力。 
+7. 要大胆，要心细 
+8. 要相信自己和别人的人品 
+9. 贪心这种算法是很少见的，没有DP是不可能的。 
+10. Cheat时要仔细研究题目：在考试的时候可以研究一下出题人想出什么样的数据，还有什 
+么样的数据比较特殊。 
+11. 不要在一棵树上吊死，不要在一题上抠死。 
+12. 边界条件要想清楚，不要脑子发热 
+13. 看不懂的、写不完、不好做的、麻烦的题目，不要急着写 
+14. DP不要认为显然。 
+15. 在大多数的联赛等级的题目里面不需要大剪枝 
+16. RP决定命运，RP是一种习惯与心态，养成于平时，平静而具有动量 

@@ -1,0 +1,42 @@
+#include <vector>
+#include <string>
+
+using namespace std;
+class MovieSeating
+{
+public:
+	long long calc(long long a, long long b)
+	{
+		if (b > a)	return 0;
+		long long res = 1;
+		for (int i = a; i > a - b; i --)
+			res *= i;
+		return res;
+	}
+	long long getSeatings(int numFriends, vector <string> hall)
+	{
+		int n = hall.size();
+		int m = hall[0].size();
+		long long res = 0;
+		for (int i = 0; i < n; i ++)
+		{
+			int t = 0;
+			for (int j = 0; j < m; j ++)
+				if  (hall[i][j] == '.')
+					t ++;
+			res += calc(t, numFriends);
+		}
+		if (numFriends > 1)
+		{
+			for (int j = 0; j < m; j ++)
+			{
+				int t = 0;
+				for (int i = 0; i < n; i ++)
+					if (hall[i][j] == '.')
+						t ++;
+				res += calc(t, numFriends);
+			}
+		}
+		return res;
+	}
+};

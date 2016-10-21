@@ -1,0 +1,17 @@
+Ural: acm.timus.ru
+
+Ural 1002
+Ural 1167
+IOI 2000 : Post邮局
+
+SCOI 2006 : 第一题
+A[1...N]
+1. Delete i, 删除 A[i]
+2. 查询区间最小值 RMQ(i, j)
+
+
+------------
+线段树: 参考
+NOI 2007 : necklace
+CTSC 2008 : totem
+CTSC 2009 : sequence 序列变换
