@@ -26,6 +26,7 @@ begin
             swap(x[s],x[min]);
       end;
 end;
+
 procedure insert(var x:shu);
 var s,t:integer;
 begin

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <Compiler Value="/usr/local/bin/ppc386" Date="-1"/>
+  <Params Value=" -Tdarwin -Pi386 -MObjFPC -Scgi -O1 -gw -gl -l -vewnhibq &quot;-Fu/Users/ivan/GitHub/NOIP/Just Play/大Y/&quot; Big.pas"/>
+  <Complete Value="False"/>
+</CONFIG>
