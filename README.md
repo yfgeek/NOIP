@@ -5,7 +5,7 @@
 
 >编译环境：Lazarus for Linux 
 
->编译系统： Ubunutu 8.04 i386 x86
+>编译系统： Ubuntu 8.04 i386 x86
 
 Just Play是当时写着玩的东西，没用😁。
 
